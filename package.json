@@ -1,0 +1,15 @@
+{
+  "name": "AwesomeTestProject",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "react-native start"
+  },
+  "dependencies": {
+    "ddp-client": "^0.1.2",
+    "react-native": "^0.17.0",
+    "react-native-google-analytics": "^1.0.0",
+    "rnpm": "^1.3.4"
+  },
+  "devDependencies": {}
+}
