@@ -12,6 +12,8 @@ var ListItem = React.createClass({
   handleOnPress(target) {
     if(typeof target === 'number') {
       this.props.navigator.jumpTo(this.props.navigator.props.initialRouteStack[target]);
+    } else if(typeof target === 'string') {
+      this.props.navigator.push({component: target});
     }
   },
   render: function() {

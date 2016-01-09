@@ -11,6 +11,8 @@ var {
   AsyncStorage,
 } = React;
 
+var e = require('./events.js');
+
 var Options = React.createClass({
   getInitialState() {
     return {
@@ -55,6 +57,10 @@ var Options = React.createClass({
         textAfter: " means that your high scores wont be saved.",
       },
     ];
+
+    e.on('login', this.updateUser);
+    e.on('logout', this.updateUser);
+
     this.updateUser();
   },
   updateUser() {
@@ -83,7 +89,7 @@ var Options = React.createClass({
           {this.state.list.map(function(li,x){
             if(li.type === "facebook") {
               return (
-                <FBListItem action={li.action} text={li.text} styleNumber={x} key={x} navigator={self.props.navigator} parent={self} />
+                <FBListItem action={li.action} text={li.text} styleNumber={x} key={x} navigator={self.props.navigator} />
               );
             } else if(li.type === "textlink") {
               return (

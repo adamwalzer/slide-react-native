@@ -9,12 +9,16 @@ var {
   AsyncStorage,
 } = React;
 
+var e = require('./events.js');
+
 var FacebookLoginManager = require('NativeModules').FacebookLoginManager;
 
 var FBListItem = React.createClass({
   logout() {
     console.log("logout");
-    AsyncStorage.removeItem('userId', this.props.parent.updateUser);
+    AsyncStorage.removeItem('userId', function() {
+      e.emit('logout');
+    });
   },
   login() {
     console.log("login");
@@ -22,7 +26,9 @@ var FBListItem = React.createClass({
       if (error) {
         alert("There was an error authenticating facebook.");
       } else {
-        AsyncStorage.setItem('userId', ''+info.userId, this.props.parent.updateUser);
+        AsyncStorage.setItem('userId', ''+info.userId, function() {
+          e.emit('login');
+        });
       }
     });
   },
