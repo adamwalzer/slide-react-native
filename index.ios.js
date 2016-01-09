@@ -24,6 +24,12 @@ var ga = this.ga = null;
 var Welcome = require('./shared/components/welcome.js');
 var OriginalGame = require('./shared/components/original-game.js');
 var Options = require('./shared/components/options.js');
+var Rules = require('./shared/components/rules.js');
+var OriginalRules = require('./shared/components/original-rules.js');
+var InfinityRules = require('./shared/components/infinity-rules.js');
+var TwistRules = require('./shared/components/twist-rules.js');
+var ClearRules = require('./shared/components/clear-rules.js');
+var CombineRules = require('./shared/components/combine-rules.js');
 
 var slide = React.createClass({
   componentWillMount() {
@@ -41,6 +47,24 @@ var slide = React.createClass({
         break;
       case 'options':
         return <Options navigator={navigator} />;
+        break;
+      case 'rules':
+        return <Rules navigator={navigator} />;
+        break;
+      case 'original-rules':
+        return <OriginalRules navigator={navigator} />;
+        break;
+      case 'infinity-rules':
+        return <InfinityRules navigator={navigator} />;
+        break;
+      case 'twist-rules':
+        return <TwistRules navigator={navigator} />;
+        break;
+      case 'clear-rules':
+        return <ClearRules navigator={navigator} />;
+        break;
+      case 'combine-rules':
+        return <CombineRules navigator={navigator} />;
         break;
       case 'welcome':
       default:
@@ -60,7 +84,7 @@ var slide = React.createClass({
     return (
       <Navigator
         initialRouteStack={this.initialRouteStack}
-        initialRoute={this.initialRouteStack[1]} 
+        initialRoute={this.initialRouteStack[6]} 
         renderScene={this.renderScene} />
     );
   }
