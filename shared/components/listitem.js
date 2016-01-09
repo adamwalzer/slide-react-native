@@ -16,7 +16,7 @@ var ListItem = React.createClass({
   },
   render: function() {
     return (
-      <TouchableWithoutFeedback onPress={this.handleOnPress.bind(this, this.props.dataTarget)}>
+      <TouchableWithoutFeedback onPress={this.handleOnPress.bind(this, this.props.dataTarget)} key={this.props.key}>
         <View style={[styles.li, styles['li'+this.props.styleNumber]]}>
           <Text style={[styles.liText, styles['liText'+this.props.styleNumber]]}>
             {this.props.text}

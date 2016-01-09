@@ -60,7 +60,7 @@ var slide = React.createClass({
     return (
       <Navigator
         initialRouteStack={this.initialRouteStack}
-        initialRoute={this.initialRouteStack[1]} 
+        initialRoute={this.initialRouteStack[6]} 
         renderScene={this.renderScene} />
     );
   }

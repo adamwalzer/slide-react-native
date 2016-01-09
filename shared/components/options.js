@@ -3,12 +3,20 @@
 var React = require('react-native');
 var styles = require('./styles.js');
 var ListItem = require('./listitem.js');
+var FBListItem = require('./fblistitem.js');
+var TextLink = require('./textlink.js');
 var {
   Text,
   View,
+  AsyncStorage,
 } = React;
 
 var Options = React.createClass({
+  getInitialState() {
+    return {
+      list: [],
+    }
+  },
   componentWillMount: function() {
     this.inItems = [
       {
@@ -16,7 +24,8 @@ var Options = React.createClass({
         text: "high scores",
       },
       {
-        dataTarget: "logout",
+        type: "facebook",
+        action: "logout",
         text: "logout with facebook",
       },
       {
@@ -24,14 +33,15 @@ var Options = React.createClass({
         text: "how to play",
       },
       {
-        dataTarget: "welcome",
+        dataTarget: 0,
         text: "play the game",
       },
     ];
 
     this.outItems = [
       {
-        dataTarget: "login",
+        type: "facebook",
+        action: "login",
         text: "facebook login",
       },
       {
@@ -39,40 +49,51 @@ var Options = React.createClass({
         text: "how to play",
       },
       {
-        dataTarget: "",
-        text: "<Text>playing without signing in</Text> means that your high scores wont be saved.",
+        type: "textlink",
+        dataTarget: 0,
+        link: "playing without signing in",
+        textAfter: " means that your high scores wont be saved.",
       },
     ];
+    this.updateUser();
   },
-  facebookLogout() {
-    Meteor.logout(function(err){
-      if (err) {
-        throw new Meteor.Error("Logout failed");
-      }
-    });
-  },
-  facebookLogin() {
-    Meteor.loginWithFacebook({}, function(err){
-      if (err) {
-        throw new Meteor.Error("Facebook login failed");
-      }
-    });
+  updateUser() {
+    var self = this;
+    AsyncStorage.getItem('userId')
+      .then( (v) => {
+        var list;
+        if(v) {
+          list = self.inItems;
+          console.log("in");
+        } else {
+          list = self.outItems;
+          console.log("out");
+        }
+        self.setState({
+          list: list
+        })
+      }).done();
   },
   render: function() {
-    var list, self = this;
-    if(false) {
-      list = this.inItems;
-    } else {
-      list = this.outItems;
-    }
+    var self = this;
 
     return (
       <View style={styles.options}>
         <View style={styles.ul}>
-          {list.map(function(li,x){
-            return (
-              <ListItem dataTarget={li.dataTarget} text={li.text} styleNumber={x} key={x} navigator={self.props.navigator} />
-            );
+          {this.state.list.map(function(li,x){
+            if(li.type === "facebook") {
+              return (
+                <FBListItem action={li.action} text={li.text} styleNumber={x} key={x} navigator={self.props.navigator} parent={self} />
+              );
+            } else if(li.type === "textlink") {
+              return (
+                <TextLink dataTarget={li.dataTarget} link={li.link} textBefore={li.textBefore} textAfter={li.textAfter} styleNumber={x} key={x} navigator={self.props.navigator} />
+              );
+            } else {
+              return (
+                <ListItem dataTarget={li.dataTarget} text={li.text} styleNumber={x} key={x} navigator={self.props.navigator} />
+              );
+            }
           })}
         </View>
       </View>

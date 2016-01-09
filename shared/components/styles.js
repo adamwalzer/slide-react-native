@@ -133,6 +133,9 @@ var stylesObject = {
     height: dimensions.height,
     width: dimensions.width,
   },
+  textlink: {
+    textDecorationLine: "underline",
+  },
 };
 
 for(var i = 0, n = colorNumbers.length; i < n; i++) {
