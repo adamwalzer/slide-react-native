@@ -8,6 +8,11 @@ var {
   View,
 } = React;
 
+// var FBSDKLogin = require('react-native-fbsdklogin');
+// var {
+//   FBSDKLoginButton,
+// } = FBSDKLogin;
+
 var Options = React.createClass({
   componentWillMount: function() {
     this.inItems = [
