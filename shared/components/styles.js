@@ -22,6 +22,7 @@ var stylesObject = {
     justifyContent: 'space-between',
     position: 'relative',
     backgroundColor: moreColors.white,
+    paddingTop: 20,
   },
   welcome: {
     margin: 10,
@@ -132,6 +133,19 @@ var stylesObject = {
     top: dimensions.height,
     height: dimensions.height,
     width: dimensions.width,
+  },
+  options: {
+    paddingTop: 100,
+    backgroundColor: moreColors.white,
+    height: dimensions.height,
+  },
+  rule: {
+    fontSize: 22,
+    textAlign: 'center',
+    paddingBottom: 20,
+  },
+  ruleHeader: {
+    paddingBottom: 20,
   },
   textlink: {
     textDecorationLine: "underline",
