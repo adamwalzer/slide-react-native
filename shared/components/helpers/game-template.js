@@ -171,7 +171,7 @@ var GameTemplate = function(opts) {
           });
           if(!alive) {
             this.moving = true;
-            this.getGameOverMessage();
+            this.gameOver();
           }
         }
         if(n) {
@@ -232,10 +232,7 @@ var GameTemplate = function(opts) {
     },
     boardCleared: opts.boardCleared || function() {},
     getGameOverMessage: opts.getGameOverMessage || function() {
-      this.setState({
-        gameOverMessage: "You scored "+this.state.score+"!",
-        extraClass: "game-over"
-      });
+      return "You scored "+this.state.score+"!";
     },
     setNewHigh: opts.setNewHigh || function(resetBoard) {
       var self = this;
@@ -314,6 +311,24 @@ var GameTemplate = function(opts) {
         top: this.resetTop
       };
     },
+    gameOverTop: new Animated.Value(dimensions.height),
+    gameOver() {
+      console.log("game over");
+      this.setState({
+        gameOverMessage: this.getGameOverMessage(),
+        gameOverTop: 0,
+      });
+    },
+    getGameOverOffset() {
+      Animated.timing(this.gameOverTop, {
+        duration: 200,
+        toValue: this.state.gameOverTop,
+      }).start();
+
+      return {
+        top: this.gameOverTop
+      };
+    },
     clickResetOption(yes) {
       yes && this.setNewHigh(true,this.b);
       this.setState({
@@ -335,6 +350,7 @@ var GameTemplate = function(opts) {
         b: this.b,
         pieces: this.pieces,
         resetTop: dimensions.height,
+        gameOverTop: dimensions.height,
       };
     },
     handleOnPress(target) {
@@ -381,31 +397,49 @@ var GameTemplate = function(opts) {
               }
             })}
           </View>
-          <Animated.View style={[styles.gameResetMenu, this.getResetOffset()]}>
-            <Text>
+          <Animated.View style={[styles.ul, styles.options, styles.gameResetMenu, this.getResetOffset()]}>
+            <Text style={[styles.ruleHeader, styles.liText, styles['liText'+0]]}>
               Reset Game?
             </Text>
             <View>
-              <Text onPress={this.clickResetOption.bind(this,true)}>
-                Yes
-              </Text>
-              <Text onPress={this.clickResetOption}>
-                No
-              </Text>
+              <TouchableWithoutFeedback onPress={this.clickResetOption.bind(this,true)}>
+                <View style={[styles.li, styles['li'+0]]}>
+                  <Text style={[styles.liText, styles['liText'+0]]}>
+                    Yes
+                  </Text>
+                </View>
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback onPress={this.clickResetOption}>
+                <View style={[styles.li, styles['li'+1]]}>
+                  <Text style={[styles.liText, styles['liText'+1]]}>
+                    No
+                  </Text>
+                </View>
+              </TouchableWithoutFeedback>
             </View>
           </Animated.View>
-          <Animated.View style={styles.gameResetMenu}>
-            <Text>{this.state.gameOverMessage}</Text>
-            <Text>
+          <Animated.View style={[styles.ul, styles.options, styles.gameResetMenu, this.getGameOverOffset()]}>
+            <Text style={[styles.ruleHeader, styles.liText, styles['liText'+0]]}>
+              {this.state.gameOverMessage}
+            </Text>
+            <Text style={[styles.ruleHeader, styles.liText, styles['liText'+0]]}>
               Play Again?
             </Text>
-            <View onClick={this.clickGameOverOption}>
-              <Text className="yes">
-                Yes
-              </Text>
-              <Text className="no">
-                No
-              </Text>
+            <View>
+              <TouchableWithoutFeedback onPress={this.clickGameOverOption.bind(this,true)}>
+                <View style={[styles.li, styles['li'+0]]}>
+                  <Text style={[styles.liText, styles['liText'+0]]}>
+                    Yes
+                  </Text>
+                </View>
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback onPress={this.clickGameOverOption}>
+                <View style={[styles.li, styles['li'+1]]}>
+                  <Text style={[styles.liText, styles['liText'+1]]}>
+                    No
+                  </Text>
+                </View>
+              </TouchableWithoutFeedback>
             </View>
           </Animated.View>
         </View>
