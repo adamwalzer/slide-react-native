@@ -330,7 +330,7 @@ var GameTemplate = function(opts) {
       };
     },
     clickResetOption(yes) {
-      yes && this.setNewHigh(true,this.b);
+      yes === true && this.setNewHigh(true,this.b);
       this.setState({
         resetTop: dimensions.height,
       });
@@ -340,7 +340,7 @@ var GameTemplate = function(opts) {
       this.setState({
         gameOverTop: dimensions.height,
       });
-      if(!yes) this.props.navigator.jumpTo(this.props.navigator.props.initialRouteStack[0]);;
+      if(yes !== true) this.props.navigator.jumpTo(this.props.navigator.props.initialRouteStack[0]);;
     },
     highCopy: opts.highCopy || "high",
     getInitialState() {
