@@ -70,10 +70,8 @@ var Options = React.createClass({
         var list;
         if(v) {
           list = self.inItems;
-          console.log("in");
         } else {
           list = self.outItems;
-          console.log("out");
         }
         self.setState({
           list: list

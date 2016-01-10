@@ -64,7 +64,6 @@ var stylesObject = {
   },
   gameMenu: {
     flexDirection: 'row',
-    marginTop: 20,
     justifyContent: 'space-between',
   },
   gameOptions: {
