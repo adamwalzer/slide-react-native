@@ -14,6 +14,8 @@ var ddpclient = new DDPClient({
   url: 'ws://104.131.68.26/slide/play/websocket',
   // socketConstructor: WebSocket // Another constructor to create new WebSockets
 });
+
+/*
 ddpclient.connect(function(error, wasReconnect) {
   // If autoReconnect is true, this callback will be invoked each time
   // a server connection is re-established
@@ -28,5 +30,6 @@ ddpclient.connect(function(error, wasReconnect) {
 
   console.log('connected!');
 });
+*/
 
 module.exports = ddpclient;
