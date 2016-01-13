@@ -16,7 +16,6 @@ var stylesObject = {
   container: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'center',
     alignItems: 'stretch',
     alignSelf: 'stretch',
     justifyContent: 'space-between',
@@ -148,6 +147,11 @@ var stylesObject = {
   },
   textlink: {
     textDecorationLine: "underline",
+  },
+  highScore: {
+    alignItems: 'stretch',
+    alignSelf: 'stretch',
+    justifyContent: 'space-between',
   },
 };
 

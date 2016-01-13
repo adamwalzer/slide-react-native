@@ -9,6 +9,7 @@ var {
   View,
   TouchableWithoutFeedback,
   AsyncStorage,
+  ListView,
 } = React;
 
 var ddp = require('../ddp.js');
@@ -32,7 +33,11 @@ var HighScoreTemplate = function(opts) {
       return {
         t: opts.title || "original",
         m: opts.max || 0,
-        n: opts.min || 0
+        n: opts.min || 0,
+        data: new ListView.DataSource({
+          rowHasChanged: (row1, row2) => !_.isEqual(row1, row2),
+        }),
+        loaded: false,
       }
     },
     left() {
@@ -51,24 +56,23 @@ var HighScoreTemplate = function(opts) {
         left: this.left,
         right: this.right,
       });
-      this.list = [];
-      ddp.connect(function(error, wasReconnect) {
-        if (error) {
-          console.log('DDP connection error!');
-          return;
-        }
+      ddp.subscribe('HighScores', [], () => this.update(ddp.collections.HighScores.items));
+      // observer = ddp.observe('HighScores');
+      // console.log(observer);
+      // console.log(ddp.collections);
 
-        ddp.subscribe(
-          'highScores',
-          [],
-          function() {
-            console.log('posts complete:');
-            console.log(ddp.collections.highScores);
-          }
-        );
-      });
+      // observer.added = () => this.update(ddp.collections.HighScores.items);
+      // observer.changed = () => this.update(ddp.collections.HighScores.items);
+      // observer.removed = () => this.update(ddp.collections.HighScores.items);
     },
     componentDidMount() {
+
+    },
+    update: function(rows) {
+      this.setState({
+        data: this.state.data.cloneWithRows(rows),
+        loaded: true,
+      });
     },
     render() {
       return (
@@ -77,34 +81,42 @@ var HighScoreTemplate = function(opts) {
             <ListItem dataTarget={"rules"} text={"back to high scores"} styleNumber={0} key={0} navigator={this.props.navigator} />
           </View>
           <View style={{left: this.state.m*dimensions.width}}>
-            {this.list.map(function(el,k){
+            <ListView
+              dataSource={this.state.data}
+              renderRow={this.renderList} />
+          </View>
+        </View>
+      );
+    },
+    renderList(el,k) {
+      return (
+        <View key={k} style={styles.highScore}>
+          <View style={styles.gameDetails}>
+            <Text>{this.state.t}</Text>
+          </View>
+          <View style={styles.gameDetails}>
+            <View style={styles.gameScore}>
+              <Text style={styles.gameScoreText}>
+                {"score"}{"\n"}
+                {el.score}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.board} onTouchStart={this.swipe.handleTouchStart} onTouchEnd={this.swipe.handleTouchEnd}>
+            {el.board.map(function(elx,x){
               return (
-                <View key={k}>
-                  <View style={styles.gameScore}>
-                    <Text style={styles.gameScoreText}>
-                      {"score"}{"\n"}
-                      {el.score}
-                    </Text>
-                  </View>
-                  <View style={styles.board} onTouchStart={this.swipe.handleTouchStart} onTouchEnd={this.swipe.handleTouchEnd}>
-                    {el.board.map(function(elx,x){
-                      return (
-                        elx.map(function(ely,y){
-                          var piece = {
-                            v: ely,
-                            w: dimensions.width/4,
-                            x: x,
-                            y: y,
-                            _id: ""+k+x+y,
-                          };
-                          return (
-                            <Piece opts={piece} key={piece._id} />
-                          );
-                        })
-                      );
-                    })}
-                  </View>
-                </View>
+                elx.map(function(ely,y){
+                  var piece = {
+                    v: ely,
+                    w: dimensions.width/4,
+                    x: x,
+                    y: y,
+                    _id: ""+k+x+y,
+                  };
+                  return (
+                    <Piece opts={piece} key={piece._id} />
+                  );
+                })
               );
             })}
           </View>
