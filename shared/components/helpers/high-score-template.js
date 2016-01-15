@@ -9,17 +9,19 @@ var {
   View,
   TouchableWithoutFeedback,
   AsyncStorage,
-  ListView,
 } = React;
+
+var Carousel = require('react-native-carousel');
 
 var ddp = require('../ddp.js');
 
-var swipe = require('./swipe.js');
 var loop = require('./loop.js');
 var pieces = require('./piece.js');
 var piece = pieces.piece;
 var Piece = pieces.Piece;
 var ListItem = require('../listitem.js');
+var colors = require('../colors.js');
+var backgroundColors = require('../background-colors.js');
 
 var HighScoreTemplate = function(opts) {
   return React.createClass({
@@ -34,28 +36,11 @@ var HighScoreTemplate = function(opts) {
         t: opts.title || "original",
         m: opts.max || 0,
         n: opts.min || 0,
-        data: new ListView.DataSource({
-          rowHasChanged: (row1, row2) => !_.isEqual(row1, row2),
-        }),
+        data: [],
         loaded: false,
-      }
-    },
-    left() {
-      this.state.n = 1 - this.data.list.length;
-      this.setState({
-        m: Math.max(this.state.m-1,this.state.n)
-      });
-    },
-    right() {
-      this.setState({
-        m: Math.min(this.state.m+1,0)
-      });
+      };
     },
     componentWillMount() {
-      this.swipe = swipe({
-        left: this.left,
-        right: this.right,
-      });
       ddp.subscribe('HighScores', [], () => this.update(ddp.collections.HighScores.items));
       // observer = ddp.observe('HighScores');
       // console.log(observer);
@@ -69,31 +54,35 @@ var HighScoreTemplate = function(opts) {
 
     },
     update: function(rows) {
+      var data = Object.keys(rows).reduce(function(res, v) {
+        return res.concat(rows[v]);
+      }, []).sort(function(a,b) {
+        return b.score - a.score;
+      });
       this.setState({
-        data: this.state.data.cloneWithRows(rows),
+        data: data,
         loaded: true,
       });
     },
     render() {
+      console.log(this.state.data);
       return (
         <View style={styles.container}>
           <View style={styles.ul}>
-            <ListItem dataTarget={"rules"} text={"back to high scores"} styleNumber={0} key={0} navigator={this.props.navigator} />
+            <ListItem dataTarget={"high-scores"} text={"back to high scores"} styleNumber={0} key={0} navigator={this.props.navigator} />
           </View>
-          <View style={{left: this.state.m*dimensions.width}}>
-            <ListView
-              dataSource={this.state.data}
-              renderRow={this.renderList} />
+          <View style={styles.gameDetails}>
+            <Text style={styles.gameTitle}>{this.state.t}</Text>
           </View>
+          <Carousel width={dimensions.width} indicatorAtBottom={false} indicatorOffset={-dimensions.height*.03} indicatorSize={dimensions.height*.06} indicatorColor={colors[0]} inactiveIndicatorColor={backgroundColors[0]}>
+            {this.state.data.map(this.renderList)}
+          </Carousel>
         </View>
       );
     },
     renderList(el,k) {
       return (
         <View key={k} style={styles.highScore}>
-          <View style={styles.gameDetails}>
-            <Text>{this.state.t}</Text>
-          </View>
           <View style={styles.gameDetails}>
             <View style={styles.gameScore}>
               <Text style={styles.gameScoreText}>
@@ -102,7 +91,7 @@ var HighScoreTemplate = function(opts) {
               </Text>
             </View>
           </View>
-          <View style={styles.board} onTouchStart={this.swipe.handleTouchStart} onTouchEnd={this.swipe.handleTouchEnd}>
+          <View style={styles.board}>
             {el.board.map(function(elx,x){
               return (
                 elx.map(function(ely,y){
