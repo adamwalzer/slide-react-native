@@ -13,9 +13,14 @@ var opts = {
     this.createPiece();
   },
   afterMove: function(moved) {
-    this.setState({
-      pieces: this.pieces
-    });
+    setTimeout(function() {
+      this.pieces = this.pieces.filter(function(piece) {
+        return !piece.toDestroy;
+      });
+      this.setState({
+        pieces: this.pieces
+      });
+    }.bind(this),350);
     var spaces = this.makeSpaces(this.b);
     if(spaces.length===15) {
       this.updateScore(100);
@@ -30,6 +35,7 @@ var opts = {
     }
   },
   split: function(spaces) {
+    this.pn |= 0;
     if(spaces.length > 0) {
       var opts = {};
       opts.p = this;
@@ -38,6 +44,7 @@ var opts = {
       opts.w = 4;
       opts.x = space.x;
       opts.y = space.y;
+      opts._id = this.pn++;
       var ps = [];
       if(opts.x>0 && this.b[opts.x-1][opts.y]) ps.push(this.b[opts.x-1][opts.y]);
       if(opts.y>0 && this.b[opts.x][opts.y-1]) ps.push(this.b[opts.x][opts.y-1]);
@@ -48,7 +55,8 @@ var opts = {
         var p = ps[n];
         opts.z = p.val()-1;
         p.val(opts.z);
-        this.b[opts.x][opts.y] = this.makeNewPiece(opts);
+        this.pieces[opts._id] = this.makeNewPiece(opts);
+        this.b[opts.x][opts.y] = this.pieces[opts._id];
         var spaces = [];
         loop.each(this.b, function(c,i) {
           loop.each(c, function(d,j) {
@@ -61,6 +69,10 @@ var opts = {
       } else {
         this.split(spaces);
       }
+    } else {
+      this.setState({
+        pieces: this.pieces
+      });
     }
   },
   newZ: function() {
