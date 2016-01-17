@@ -23,6 +23,8 @@ var ga = this.ga = null;
 
 var Welcome = require('./shared/components/welcome.js');
 var OriginalGame = require('./shared/components/original-game.js');
+var InfinityGame = require('./shared/components/infinity-game.js');
+var ClearGame = require('./shared/components/clear-game.js');
 var Options = require('./shared/components/options.js');
 var Rules = require('./shared/components/rules.js');
 var OriginalRules = require('./shared/components/original-rules.js');
@@ -46,6 +48,12 @@ var slide = React.createClass({
     switch (route.component) {
       case 'original-game':
         return <OriginalGame navigator={navigator} />;
+        break;
+      case 'infinity-game':
+        return <InfinityGame navigator={navigator} />;
+        break;
+      case 'clear-game':
+        return <ClearGame navigator={navigator} />;
         break;
       case 'options':
         return <Options navigator={navigator} />;
@@ -92,7 +100,7 @@ var slide = React.createClass({
     return (
       <Navigator
         initialRouteStack={this.initialRouteStack}
-        initialRoute={this.initialRouteStack[6]} 
+        initialRoute={this.initialRouteStack[0]} 
         renderScene={this.renderScene} />
     );
   }

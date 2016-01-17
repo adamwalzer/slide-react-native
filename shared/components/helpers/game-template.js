@@ -127,6 +127,7 @@ var GameTemplate = function(opts) {
       if(!this.pieces.length) this.renderGame();
     },
     renderGame: opts.renderGame || function() {
+      this.state.gameOver = false;
       this.createPiece();
     },
     createPiece(n) {
@@ -234,9 +235,12 @@ var GameTemplate = function(opts) {
     getGameOverMessage: opts.getGameOverMessage || function() {
       return "You scored "+this.state.score+"!";
     },
+    getHigh: opts.getHigh || function() {
+      return Math.max(this.state.score,this.state.high);
+    },
     setNewHigh: opts.setNewHigh || function(resetBoard) {
       var self = this;
-      var high = Math.max(this.state.score,this.state.high);
+      var high = this.getHigh();
       this.setState({
         high: high,
       });
@@ -317,6 +321,7 @@ var GameTemplate = function(opts) {
       this.setState({
         gameOverMessage: this.getGameOverMessage(),
         gameOverTop: 0,
+        isGameOver: true,
       });
     },
     getGameOverOffset() {
@@ -351,6 +356,7 @@ var GameTemplate = function(opts) {
         pieces: this.pieces,
         resetTop: dimensions.height,
         gameOverTop: dimensions.height,
+        isGameOver: false,
       };
     },
     handleOnPress(target) {
