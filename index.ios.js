@@ -30,6 +30,8 @@ var InfinityRules = require('./shared/components/infinity-rules.js');
 var TwistRules = require('./shared/components/twist-rules.js');
 var ClearRules = require('./shared/components/clear-rules.js');
 var CombineRules = require('./shared/components/combine-rules.js');
+var HighScores = require('./shared/components/high-scores.js');
+var OriginalHighScores = require('./shared/components/original-high-scores.js');
 
 var slide = React.createClass({
   componentWillMount() {
@@ -65,6 +67,12 @@ var slide = React.createClass({
         break;
       case 'combine-rules':
         return <CombineRules navigator={navigator} />;
+        break;
+      case 'high-scores':
+        return <HighScores navigator={navigator} />;
+        break;
+      case 'original-high-scores':
+        return <OriginalHighScores navigator={navigator} />;
         break;
       case 'welcome':
       default:

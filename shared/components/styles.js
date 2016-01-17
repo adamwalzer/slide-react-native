@@ -16,50 +16,41 @@ var stylesObject = {
   container: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'center',
     alignItems: 'stretch',
     alignSelf: 'stretch',
     justifyContent: 'space-between',
     position: 'relative',
     backgroundColor: moreColors.white,
-    paddingTop: 20,
+    paddingTop: dimensions.height*.04,
   },
   welcome: {
-    margin: 10,
-  },
-  list: {
-    fontSize: 20,
-    textAlign: 'center',
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+    margin: dimensions.width*.02,
   },
   logoContainer: {
     justifyContent: 'center',
     alignItems: 'center',
   },
   logo: {
-    width: 220,
-    height: 120,
-    marginTop: 20,
-    marginBottom: 20,
+    width: dimensions.width*.5,
+    height: dimensions.height*.15,
+    marginTop: dimensions.height*.04,
+    marginBottom: dimensions.height*.04,
     resizeMode: 'contain',
   },
   ul: {
     paddingTop: 0,
     paddingBottom: 0,
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingLeft: dimensions.width*.04,
+    paddingRight: dimensions.width*.04,
+    margin: dimensions.width*.02,
   },
   li: {
-    borderRadius: 10,
-    marginBottom: 20,
-    padding: 15,
+    borderRadius: dimensions.width*.03,
+    marginBottom: dimensions.height*.02,
+    padding: dimensions.height*.02,
   },
   liText: {
-    fontSize: 30,
+    fontSize: dimensions.height*.04,
     textAlign: 'center',
   },
   gameMenu: {
@@ -67,30 +58,30 @@ var stylesObject = {
     justifyContent: 'space-between',
   },
   gameOptions: {
-    height: 50,
-    width: 50,
+    height: dimensions.height*.1,
+    width: dimensions.height*.1,
     position: 'relative',
-    paddingTop: 10,
-    paddingLeft: 10,
+    paddingTop: dimensions.height*.005,
+    paddingLeft: dimensions.height*.02,
   },
   gameOptionsLines: {
     backgroundColor: colors[0],
-    borderRadius: 2,
-    height: 4,
-    width: 40,
-    marginTop: 3,
-    marginBottom: 3,
+    borderRadius: dimensions.height*.002,
+    height: dimensions.height*.005,
+    width: dimensions.width*.1,
+    marginTop: dimensions.height*.005,
+    marginBottom: dimensions.height*.005,
   },
   gameReset: {
   },
   gameResetImage: {
-    width: 50,
-    height: 50,
+    width: dimensions.width*.11,
+    height: dimensions.width*.11,
     resizeMode: 'contain',
   },
   gameTitle: {
     textAlign: 'center',
-    fontSize: 40,
+    fontSize: dimensions.height*.05,
     color: colors[0],
   },
   gameDetails: {
@@ -98,7 +89,7 @@ var stylesObject = {
     flexDirection: 'row',
   },
   gameScore: {
-    borderRadius: 15,
+    borderRadius: dimensions.width*.025,
     width: dimensions.width/4,
     height: dimensions.width/4,
     backgroundColor: backgroundColors[0],
@@ -107,7 +98,7 @@ var stylesObject = {
   gameScoreText: {
     textAlign: 'center',
     color: colors[0],
-    fontSize: 28,
+    fontSize: dimensions.height*.04,
   },
   board: {
     position: 'relative',
@@ -121,11 +112,11 @@ var stylesObject = {
     height: dimensions.width/4,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 15,
+    borderRadius: dimensions.width*.025,
   },
   pieceText: {
     textAlign: 'center',
-    fontSize: 28,
+    fontSize: dimensions.height*.04,
   },
   gameResetMenu: {
     position: 'absolute',
@@ -134,20 +125,28 @@ var stylesObject = {
     width: dimensions.width,
   },
   options: {
-    paddingTop: 100,
+    paddingTop: dimensions.height*.1,
     backgroundColor: moreColors.white,
     height: dimensions.height,
   },
   rule: {
-    fontSize: 22,
+    fontSize: dimensions.height*.028,
     textAlign: 'center',
-    paddingBottom: 20,
+    paddingBottom: dimensions.height*.02,
   },
   ruleHeader: {
-    paddingBottom: 20,
+    paddingBottom: dimensions.height*.02,
   },
   textlink: {
     textDecorationLine: "underline",
+  },
+  highScore: {
+    justifyContent: 'space-between',
+    width: dimensions.width,
+    height: dimensions.width*1.35,
+    flex: 1,
+    alignItems: 'center',
+    paddingTop: dimensions.height*.025,
   },
 };
 
