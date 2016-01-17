@@ -40,9 +40,8 @@ var stylesObject = {
   ul: {
     paddingTop: 0,
     paddingBottom: 0,
-    paddingLeft: dimensions.width*.04,
-    paddingRight: dimensions.width*.04,
-    margin: dimensions.width*.02,
+    paddingLeft: dimensions.width*.06,
+    paddingRight: dimensions.width*.06,
   },
   li: {
     borderRadius: dimensions.width*.03,

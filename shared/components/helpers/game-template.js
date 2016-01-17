@@ -110,7 +110,7 @@ var GameTemplate = function(opts) {
     originalB: opts.originalB || null,
     componentWillMount: opts.componentWillMount || function() {
       var self = this;
-      AsyncStorage.getItem(this.t+'-high-score',function(val) {
+      AsyncStorage.getItem(this.t+'-high-score',function(error,val) {
         self.setState({
           high: val || 0,
         });
@@ -127,7 +127,7 @@ var GameTemplate = function(opts) {
       if(!this.pieces.length) this.renderGame();
     },
     renderGame: opts.renderGame || function() {
-      this.state.gameOver = false;
+      this.state.isGameOver = false;
       this.createPiece();
     },
     createPiece(n) {
@@ -220,14 +220,13 @@ var GameTemplate = function(opts) {
     right: moveTiles('X',1),
     down: moveTiles('Y',1),
     afterMove: opts.afterMove || function(moved) {
-      var self = this;
       this.setState({
         pieces: this.pieces
       });
       if(moved) {
         setTimeout(function() {
-          self.createPiece();
-        }, 250);
+          this.createPiece();
+        }.bind(this), 250);
       }
       this.moving = false;
     },
@@ -254,7 +253,7 @@ var GameTemplate = function(opts) {
         }
       }
 
-      AsyncStorage.getItem('userId', function(userId) {
+      AsyncStorage.getItem('userId', function(error,userId) {
         if(userId) {
           ddp.call('addHighScore', {
             game: self.t,
@@ -331,7 +330,7 @@ var GameTemplate = function(opts) {
       }).start();
 
       return {
-        top: this.gameOverTop
+        top: this.gameOverTop,
       };
     },
     clickResetOption(yes) {

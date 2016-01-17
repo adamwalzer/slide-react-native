@@ -37,25 +37,25 @@ var opts = {
   //   }
   // },
   getHigh() {
-    return Math.min(this.state.score,this.state.high);
+    return Math.min(this.state.score,this.state.high||1000000);
   },
   afterMove: function(moved) {
     if(this.state.isGameOver) return;
-    var self = this;
-    self.updateScore(1);
+    this.updateScore(1);
     if(moved) {
       setTimeout(function() {
-        self.createPiece();
-      }, 250);
+        this.createPiece();
+      }.bind(this), 250);
     }
-    self.moving = false;
+    this.moving = false;
   },
   renderGame: function() {
     this.state.isGameOver = false;
     this.moving = false;
     this.b = Array(Array(null,null,null,null),Array(null,null,null,null),Array(null,null,null,null),Array(null,null,null,null));
     this.originalB = Array(Array({v:0},{v:0},{v:0},{v:0}),Array({v:0},{v:0},{v:0},{v:0}),Array({v:0},{v:0},{v:0},{v:0}),Array({v:0},{v:0},{v:0},{v:0}));
-    this.createPiece(10);
+    this.createPiece(2);
+    // this.createPiece(10);
   },
   makeSpaces: function(b,values,n) {
     var spaces = [];
@@ -74,11 +74,11 @@ var opts = {
     return "You couldn't clear the board";
   },
   boardCleared: function() {
-    this.gameOver = true;
     this.setState({
       gameOverMessage: "You scored " + this.state.score + "!",
-    });
-    this.setNewHigh();
+      gameOverTop: 0,
+      isGameOver: true,
+    }, this.setNewHigh);
   },
   combineVal: function() {
     return " ";
@@ -90,6 +90,10 @@ var opts = {
     if(typeof n == "number") {
       this.originalB[opts.x][opts.y] = {v:opts.z};
     }
+    this.setState({
+      b: this.b,
+      pieces: this.pieces
+    });
   }
 };
 
