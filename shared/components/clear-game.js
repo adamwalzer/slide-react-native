@@ -54,8 +54,8 @@ var opts = {
     this.moving = false;
     this.b = Array(Array(null,null,null,null),Array(null,null,null,null),Array(null,null,null,null),Array(null,null,null,null));
     this.originalB = Array(Array({v:0},{v:0},{v:0},{v:0}),Array({v:0},{v:0},{v:0},{v:0}),Array({v:0},{v:0},{v:0},{v:0}),Array({v:0},{v:0},{v:0},{v:0}));
-    this.createPiece(2);
-    // this.createPiece(10);
+    // this.createPiece(2);
+    this.createPiece(10);
   },
   makeSpaces: function(b,values,n) {
     var spaces = [];
