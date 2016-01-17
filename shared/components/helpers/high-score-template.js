@@ -65,7 +65,6 @@ var HighScoreTemplate = function(opts) {
       });
     },
     render() {
-      console.log(this.state.data);
       return (
         <View style={styles.container}>
           <View style={styles.ul}>
