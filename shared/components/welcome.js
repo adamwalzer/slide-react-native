@@ -19,19 +19,19 @@ var Welcome = React.createClass({
         text: "original",
       },
       {
-        dataTarget: "infinity-game",
+        dataTarget: 2,
         text: "infinity",
       },
       {
-        dataTarget: "twist-game",
+        dataTarget: 3,
         text: "twist",
       },
       {
-        dataTarget: "clear-game",
+        dataTarget: 4,
         text: "clear",
       },
       {
-        dataTarget: "combine-game",
+        dataTarget: 5,
         text: "combine",
       },
       {

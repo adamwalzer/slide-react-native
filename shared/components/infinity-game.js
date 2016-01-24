@@ -24,6 +24,9 @@ var opts = {
   },
   combineVal: function(v) {
     return v+1;
+  },
+  styleFunction(v) {
+    return v%16;
   }
 };
 

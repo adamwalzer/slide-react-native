@@ -108,6 +108,7 @@ var GameTemplate = function(opts) {
     originalValues: opts.values || [],
     b: Array(Array(null,null,null,null),Array(null,null,null,null),Array(null,null,null,null),Array(null,null,null,null)),
     originalB: opts.originalB || null,
+    styleFunction: opts.styleFunction,
     componentWillMount: opts.componentWillMount || function() {
       var self = this;
       AsyncStorage.getItem(this.t+'-high-score',function(error,val) {
@@ -148,6 +149,7 @@ var GameTemplate = function(opts) {
           opts.x = space.x;
           opts.y = space.y;
           opts.z = this.newZ(this.values,n);
+          opts.styleFunction = self.styleFunction;
           opts._id = this.move++;
           this.t != "clear" && this.t != "combine" && this.updateScore(opts.z);
           this.pieces[opts._id] = this.makeNewPiece(opts);
@@ -253,47 +255,44 @@ var GameTemplate = function(opts) {
         }
       }
 
-      AsyncStorage.getItem('userId', function(error,userId) {
-        if(userId) {
-          ddp.call('addHighScore', {
-            game: self.t,
-            score: self.state.score,
-            board: b,
-            sort: self.sort
-          }, function() {
-            if(resetBoard) {
-              self.setState({
-                score: 0
+      ddp.connect(function(error) {
+        if(!error) {
+          AsyncStorage.getItem('userId', function(error,userId) {
+            if(userId) {
+              ddp.call('addHighScore', {
+                game: self.t,
+                score: self.state.score,
+                board: b,
+                sort: self.sort
+              }, function() {
+                self.resetBoard.call(self, resetBoard);
               });
-              loop.each(self.b, function(c) {
-                loop.each(c, function(d) {
-                  d && d.destroy();
-                });
-              });
-              self.values = self.originalValues;
-              self.moving = false;
-              self.pieces = [];
-              self.b = Array(Array(null,null,null,null),Array(null,null,null,null),Array(null,null,null,null),Array(null,null,null,null));
-              self.renderGame();
+            } else {
+              self.resetBoard.call(self, resetBoard);
             }
-          });
-        } else if(resetBoard) {
-          self.setState({
-            score: 0
-          });
-          loop.each(self.b, function(c) {
-            loop.each(c, function(d) {
-              d && d.destroy();
-            });
-          });
-          self.values = self.originalValues;
-          self.moving = false;
-          self.pieces = [];
-          self.b = Array(Array(null,null,null,null),Array(null,null,null,null),Array(null,null,null,null),Array(null,null,null,null));
-          self.renderGame();
+          }).done();
+        } else {
+          self.resetBoard.call(self, resetBoard);
         }
-      }).done();
+      });
 
+    },
+    resetBoard(resetBoard) {
+      if(resetBoard) {
+        this.setState({
+          score: 0
+        });
+        loop.each(this.b, function(c) {
+          loop.each(c, function(d) {
+            d && d.destroy();
+          });
+        });
+        this.values = this.originalValues;
+        this.moving = false;
+        this.pieces = [];
+        this.b = Array(Array(null,null,null,null),Array(null,null,null,null),Array(null,null,null,null),Array(null,null,null,null));
+        this.renderGame();
+      }
     },
     capitalize(string) {
       return string.charAt(0).toUpperCase() + string.slice(1);
