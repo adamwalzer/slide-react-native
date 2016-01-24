@@ -13,28 +13,29 @@ var opts = {
     this.createPiece();
   },
   afterMove: function(moved) {
-    setTimeout(function() {
-      this.pieces = this.pieces.filter(function(piece) {
-        return !piece.toDestroy;
-      });
+    // setTimeout(function() {
       this.setState({
         pieces: this.pieces
       });
-    }.bind(this),350);
-    var spaces = this.makeSpaces(this.b);
-    if(spaces.length===15) {
+      this.pieces = this.pieces.filter(function(piece) {
+        return !piece.toDestroy;
+      });
+    // }.bind(this),350);
+    // var spaces = this.makeSpaces(this.b);
+    if(this.spaceLength===15) {
       this.updateScore(100);
-      this.split(spaces);
+      this.split(this.makeSpaces(this.b));
     }
     this.mx++;
     this.move++;
     this.moving = false;
     if(this.mx>=13) {
       this.moving = true;
-      this.getGameOverMessage();
+      this.gameOver();
     }
   },
   split: function(spaces) {
+    this.spaceLength = 0;
     this.pn |= 0;
     if(spaces.length > 0) {
       var opts = {};
@@ -54,6 +55,9 @@ var opts = {
         var n = Math.floor(Math.random()*ps.length);
         var p = ps[n];
         opts.z = p.val()-1;
+        opts.styleFunction = function(v) {
+          return v%16;
+        };
         p.val(opts.z);
         this.pieces[opts._id] = this.makeNewPiece(opts);
         this.b[opts.x][opts.y] = this.pieces[opts._id];
@@ -81,11 +85,15 @@ var opts = {
   combineVal: function(v) {
     this.mx=0;
     this.updateScore(1);
+    this.spaceLength++;
     return v+1;
   },
   movedWithoutCombine: function() {
     return false;
-  }
+  },
+  styleFunction(v) {
+    return v%16;
+  },
 };
 
 var CombineGame = GameTemplate(opts);

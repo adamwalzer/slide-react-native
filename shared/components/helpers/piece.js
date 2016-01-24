@@ -17,6 +17,9 @@ var backgroundColors = require('../background-colors.js');
 var piece = function(opts) {
   this.initialize = function(opts) {
     var opts = opts || {};
+    this.styleFunction = opts.styleFunction || function(v) {
+      return Math.log2(v)%16;
+    };
     this.w = opts.w ? dimensions.width/opts.w : 25;
     this.x = opts.x || 0;
     this.y = opts.y || 0;
@@ -24,13 +27,18 @@ var piece = function(opts) {
     this.m = opts.m || 0
     this._id = opts._id || 0;
     this.p = opts.p || {};
+    this.s = this.styleFunction(this.v);
   };
   this.notNew = function() {
     this.new = false;
   };
   this.val = function(nv) {
     this.v = nv || this.v;
-    if(this.v===" ") this.destroy();
+    if(this.v===" ") {
+      this.destroy();
+    } else {
+      this.s = this.styleFunction(this.v);
+    }
     return this.v;
   };
   this.move = function(m) {
@@ -52,6 +60,7 @@ var piece = function(opts) {
     return this;
   };
   this.destroy = function() {
+    this.s = 16;
     this.toDestroy = true;
   };
   this.initialize(opts);
@@ -71,7 +80,7 @@ var Piece = React.createClass({
   getOffsets() {
 
     var backgroundColor = this.state.styleNumber.interpolate({
-        inputRange: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+        inputRange: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
         outputRange: backgroundColors,
     });
 
@@ -82,7 +91,7 @@ var Piece = React.createClass({
       }),
       Animated.timing(this.state.styleNumber, {
         duration: 200,
-        toValue: Math.log2(this.props.opts.v)%16,
+        toValue: this.props.opts.s,
       }),
       Animated.timing(this.state.left, {
         duration: 200,
@@ -103,13 +112,13 @@ var Piece = React.createClass({
   },
   getTextOffsets() {
     var textColor = this.state.textStyleNumber.interpolate({
-        inputRange: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+        inputRange: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
         outputRange: colors,
     });
 
     Animated.timing(this.state.textStyleNumber, {
       duration: 200,
-      toValue: Math.log2(this.props.opts.v)%16,
+      toValue: this.props.opts.s,
     }).start();
 
     return {

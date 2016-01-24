@@ -108,6 +108,7 @@ var GameTemplate = function(opts) {
     originalValues: opts.values || [],
     b: Array(Array(null,null,null,null),Array(null,null,null,null),Array(null,null,null,null),Array(null,null,null,null)),
     originalB: opts.originalB || null,
+    styleFunction: opts.styleFunction,
     componentWillMount: opts.componentWillMount || function() {
       var self = this;
       AsyncStorage.getItem(this.t+'-high-score',function(error,val) {
@@ -148,6 +149,7 @@ var GameTemplate = function(opts) {
           opts.x = space.x;
           opts.y = space.y;
           opts.z = this.newZ(this.values,n);
+          opts.styleFunction = self.styleFunction;
           opts._id = this.move++;
           this.t != "clear" && this.t != "combine" && this.updateScore(opts.z);
           this.pieces[opts._id] = this.makeNewPiece(opts);

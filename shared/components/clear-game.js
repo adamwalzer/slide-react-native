@@ -94,6 +94,9 @@ var opts = {
       b: this.b,
       pieces: this.pieces
     });
+  },
+  styleFunction(v) {
+    return v%16;
   }
 };
 
