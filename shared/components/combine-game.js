@@ -13,15 +13,17 @@ var opts = {
     this.createPiece();
   },
   afterMove: function(moved) {
-    // setTimeout(function() {
+    this.setState({
+      pieces: this.pieces
+    });
+    this.pieces = this.pieces.filter(function(piece) {
+      return !piece.toDestroy;
+    });
+    setTimeout(function() {
       this.setState({
         pieces: this.pieces
       });
-      this.pieces = this.pieces.filter(function(piece) {
-        return !piece.toDestroy;
-      });
-    // }.bind(this),350);
-    // var spaces = this.makeSpaces(this.b);
+    }.bind(this),250);
     if(this.spaceLength===15) {
       this.updateScore(100);
       this.split(this.makeSpaces(this.b));

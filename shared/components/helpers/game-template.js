@@ -345,6 +345,7 @@ var GameTemplate = function(opts) {
       });
       if(yes !== true) this.props.navigator.jumpTo(this.props.navigator.props.initialRouteStack[0]);;
     },
+    getBoardStyle: opts.getBoardStyle || function() {},
     highCopy: opts.highCopy || "high",
     getInitialState() {
       return {
@@ -355,6 +356,7 @@ var GameTemplate = function(opts) {
         resetTop: dimensions.height,
         gameOverTop: dimensions.height,
         isGameOver: false,
+        degrees: 0,
       };
     },
     handleOnPress(target) {
@@ -363,6 +365,7 @@ var GameTemplate = function(opts) {
       }
     },
     render() {
+      var self = this;
       return (
         <View style={styles.container}>
           <View style={styles.gameMenu}>
@@ -394,13 +397,13 @@ var GameTemplate = function(opts) {
               </Text>
             </View>
           </View>
-          <View ref="board" style={styles.board} onTouchStart={this.swipe.handleTouchStart} onTouchEnd={this.swipe.handleTouchEnd}>
+          <Animated.View ref="board" style={[styles.board, this.getBoardStyle()]} onTouchStart={this.swipe.handleTouchStart} onTouchEnd={this.swipe.handleTouchEnd}>
             {this.state.pieces.map(function(piece){
               if(piece) {
-                return <Piece opts={piece} key={piece._id} ref={'p'+piece._id} />;
+                return <Piece opts={piece} key={piece._id} degrees={-self.state.degrees} ref={'p'+piece._id} />;
               }
             })}
-          </View>
+          </Animated.View>
           <Animated.View style={[styles.ul, styles.options, styles.gameResetMenu, this.getResetOffset()]}>
             <Text style={[styles.ruleHeader, styles.liText, styles['liText'+0]]}>
               Reset Game?

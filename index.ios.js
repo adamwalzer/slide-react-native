@@ -24,6 +24,7 @@ var ga = this.ga = null;
 var Welcome = require('./shared/components/welcome.js');
 var OriginalGame = require('./shared/components/original-game.js');
 var InfinityGame = require('./shared/components/infinity-game.js');
+var TwistGame = require('./shared/components/twist-game.js');
 var ClearGame = require('./shared/components/clear-game.js');
 var CombineGame = require('./shared/components/combine-game.js');
 var Options = require('./shared/components/options.js');
@@ -52,6 +53,9 @@ var slide = React.createClass({
         break;
       case 'infinity-game':
         return <InfinityGame navigator={navigator} />;
+        break;
+      case 'twist-game':
+        return <TwistGame navigator={navigator} />;
         break;
       case 'clear-game':
         return <ClearGame navigator={navigator} />;
