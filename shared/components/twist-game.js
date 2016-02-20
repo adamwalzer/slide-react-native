@@ -84,10 +84,10 @@ var opts = {
     };
   },
   afterCreatePiece: function(opts) {
-    setTimeout(function() {
-      this.fall(0);
-      this.fall(0);
-    }.bind(this), 250);
+    this.setState({
+      pieces: this.pieces
+    });
+    setTimeout(this.fall.bind(this,0), 250);
   },
   componentWillMount: function() {
     var self = this;
@@ -105,19 +105,26 @@ var opts = {
     this.setState({
       pieces: this.pieces
     });
-    setTimeout(function() {
+    if(moved) {
+      setTimeout(function() {
+        this.pieces = this.pieces.filter(function(piece) {
+          return !piece.toDestroy;
+        });
+        this.fall();
+      }.bind(this),250);
+      if(create) {
+        setTimeout(function() {
+          this.createPiece();
+        }.bind(this), 250);
+      }
+    }
+    this.moving = false;
+  },
+  componentDidUpdate() {
+    if(this.state.pieces !== this.pieces) {
       this.setState({
         pieces: this.pieces
       });
-    }.bind(this),500);
-    if(create) {
-      var self = this;
-      if(moved) {
-        setTimeout(function() {
-          self.createPiece();
-        }, 250);
-      }
-      this.moving = false;
     }
   }
 };
