@@ -52,26 +52,27 @@ var GameTemplate = function(opts) {
       if(!this.moving || typeof create != "undefined") {
         if(typeof create === "undefined") this.moving = true;
         var moved = false;
-        for(var j=0; j<4; j++) {
+        var self = this;
+        loop.each([0,1,2,3], function(j) {
           for(var i=1.5+.5*d; d*i>d*1.5-2.5; i-=d) {
-            if(getB(this,i,j)) {
+            if(getB(self,i,j)) {
               for(var k=1;k<=1.5+d*1.5-d*i;k++) {
-                var b = getB(this,i+d*k,j);
+                var b = getB(self,i+d*k,j);
                 if(!b) {
-                  b = getB(this,i+d*k-d,j);
+                  b = getB(self,i+d*k-d,j);
                   if(b) {
-                    setB(this,i+d*k,j,b['move'+Z](i+d*k));
+                    setB(self,i+d*k,j,b['move'+Z](i+d*k));
                   }
-                  setB(this,i+d*k-d,j,null);
+                  setB(self,i+d*k-d,j,null);
                   moved = movedWithoutCombine();
                 } else {
-                  var b2 = getB(this,i+d*k-d,j);
-                  if(b.move() != this.move && b.val() === b2.val()) {
-                    b.val(this.combineVal(b.val()));
-                    b.move(this.move);
-                    b2['move'+Z](getB(this,i+d*k,j)['get'+Z]()).destroy();
-                    if(b.val() === " ") setB(this,i+d*k,j,null);
-                    setB(this,i+d*k-d,j,null);
+                  var b2 = getB(self,i+d*k-d,j);
+                  if(b.move() != self.move && b.val() === b2.val()) {
+                    b.val(self.combineVal(b.val()));
+                    b.move(self.move);
+                    b2['move'+Z](getB(self,i+d*k,j)['get'+Z]()).destroy();
+                    if(b.val() === " ") setB(self,i+d*k,j,null);
+                    setB(self,i+d*k-d,j,null);
                     moved = true;
                   }
                   break;
@@ -79,7 +80,7 @@ var GameTemplate = function(opts) {
               }
             }
           }
-        }
+        });
         this.afterMove(moved,create);
       }
     }
@@ -345,6 +346,7 @@ var GameTemplate = function(opts) {
       });
       if(yes !== true) this.props.navigator.jumpTo(this.props.navigator.props.initialRouteStack[0]);;
     },
+    getBoardStyle: opts.getBoardStyle || function() {},
     highCopy: opts.highCopy || "high",
     getInitialState() {
       return {
@@ -355,6 +357,7 @@ var GameTemplate = function(opts) {
         resetTop: dimensions.height,
         gameOverTop: dimensions.height,
         isGameOver: false,
+        degrees: 0,
       };
     },
     handleOnPress(target) {
@@ -362,7 +365,9 @@ var GameTemplate = function(opts) {
         this.props.navigator.jumpTo(this.props.navigator.props.initialRouteStack[target]);
       }
     },
+    componentDidUpdate: opts.componentDidUpdate || function() {},
     render() {
+      var self = this;
       return (
         <View style={styles.container}>
           <View style={styles.gameMenu}>
@@ -394,13 +399,13 @@ var GameTemplate = function(opts) {
               </Text>
             </View>
           </View>
-          <View ref="board" style={styles.board} onTouchStart={this.swipe.handleTouchStart} onTouchEnd={this.swipe.handleTouchEnd}>
+          <Animated.View ref="board" style={[styles.board, this.getBoardStyle()]} onTouchStart={this.swipe.handleTouchStart} onTouchEnd={this.swipe.handleTouchEnd}>
             {this.state.pieces.map(function(piece){
               if(piece) {
-                return <Piece opts={piece} key={piece._id} ref={'p'+piece._id} />;
+                return <Piece opts={piece} key={piece._id} degrees={-self.state.degrees} ref={'p'+piece._id} />;
               }
             })}
-          </View>
+          </Animated.View>
           <Animated.View style={[styles.ul, styles.options, styles.gameResetMenu, this.getResetOffset()]}>
             <Text style={[styles.ruleHeader, styles.liText, styles['liText'+0]]}>
               Reset Game?
