@@ -23,7 +23,7 @@ var piece = function(opts) {
     this.w = opts.w ? dimensions.width/opts.w : 25;
     this.x = opts.x || 0;
     this.y = opts.y || 0;
-    this.v = opts.z || 2;
+    this.v = opts.z || 0;
     this.m = opts.m || 0
     this._id = opts._id || 0;
     this.p = opts.p || {};
@@ -73,7 +73,7 @@ var Piece = React.createClass({
       opacity: new Animated.Value(0),
       left: new Animated.Value(this.props.opts.x*this.props.opts.w),
       top: new Animated.Value(this.props.opts.y*this.props.opts.w),
-      degrees: new Animated.Value(this.props.degrees),
+      degrees: new Animated.Value(this.props.degrees || 0),
       new: true,
     };
   },
@@ -116,7 +116,7 @@ var Piece = React.createClass({
         outputRange: colors,
     });
 
-    var options = [this.props.degrees,this.state.degrees._value].sort(function(a,b) {
+    var options = [this.props.degrees || 0,this.state.degrees._value].sort(function(a,b) {
       return a - b;
     });
     var degrees = this.state.degrees.interpolate({
@@ -131,7 +131,7 @@ var Piece = React.createClass({
       }),
       Animated.timing(this.state.degrees, {
         duration: 200,
-        toValue: this.props.degrees,
+        toValue: this.props.degrees || 0,
       }),
     ]).start();
 

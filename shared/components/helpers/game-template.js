@@ -260,12 +260,13 @@ var GameTemplate = function(opts) {
         if(!error) {
           AsyncStorage.getItem('userId', function(error,userId) {
             if(userId) {
-              ddp.call('addHighScore', {
+              ddp.call('addHighScore', [{
+                userId,
                 game: self.t,
                 score: self.state.score,
                 board: b,
                 sort: self.sort
-              }, function() {
+              }], function() {
                 self.resetBoard.call(self, resetBoard);
               });
             } else {

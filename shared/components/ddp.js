@@ -13,6 +13,7 @@ var ddpclient = new DDPClient({
   // Use a full url instead of a set of `host`, `port` and `ssl`
   url: 'ws://localhost:3000/websocket',
   // url: 'ws://104.131.68.26/slide/play/websocket',
+  // url: 'ws://thataw.com/slide/play/websocket',
   // socketConstructor: WebSocket // Another constructor to create new WebSockets
 });
 

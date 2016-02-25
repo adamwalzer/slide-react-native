@@ -34,14 +34,19 @@ var HighScoreTemplate = function(opts) {
     getInitialState() {
       return {
         t: opts.title || "original",
-        m: opts.max || 0,
-        n: opts.min || 0,
         data: [],
         loaded: false,
       };
     },
     componentWillMount() {
-      ddp.subscribe('HighScores', [], () => this.update(ddp.collections.HighScores.items));
+      var self = this;
+      AsyncStorage.getItem('userId')
+        .then( (userId) => {
+          ddp.subscribe('HighScores', [userId], () => {
+            var items = ddp.collections.HighScores ? ddp.collections.HighScores.items : null;
+            self.update(items);
+          });
+        }).done();
       // observer = ddp.observe('HighScores');
       // console.log(observer);
       // console.log(ddp.collections);
@@ -54,11 +59,13 @@ var HighScoreTemplate = function(opts) {
 
     },
     update: function(rows) {
-      var data = Object.keys(rows).reduce(function(res, v) {
+      var data = rows ? Object.keys(rows).reduce(function(res, v) {
         return res.concat(rows[v]);
-      }, []).sort(function(a,b) {
+      }, []).filter(function(a) {
+        return a.game === opts.title;
+      }).sort(function(a,b) {
         return b.score - a.score;
-      });
+      }) : [];
       this.setState({
         data: data,
         loaded: true,
@@ -74,7 +81,13 @@ var HighScoreTemplate = function(opts) {
             <Text style={styles.gameTitle}>{this.state.t}</Text>
           </View>
           <Carousel width={dimensions.width} indicatorAtBottom={false} indicatorOffset={-dimensions.height*.03} indicatorSize={dimensions.height*.06} indicatorColor={colors[0]} inactiveIndicatorColor={backgroundColors[0]}>
-            {this.state.data.map(this.renderList)}
+            {(() => {
+              if(this.state.data.length) {
+                return this.state.data.map(this.renderList);
+              } else {
+                return this.renderNoHighScores();
+              }
+            })()}
           </Carousel>
         </View>
       );
@@ -94,21 +107,31 @@ var HighScoreTemplate = function(opts) {
             {el.board.map(function(elx,x){
               return (
                 elx.map(function(ely,y){
-                  var piece = {
-                    v: ely,
-                    w: dimensions.width/4,
+                  var p = new piece({
+                    z: ely,
+                    w: 4,
                     x: x,
                     y: y,
                     _id: ""+k+x+y,
-                  };
+                  });
                   return (
-                    <Piece opts={piece} key={piece._id} />
+                    <Piece opts={p} key={p._id} />
                   );
                 })
               );
             })}
           </View>
         </View>
+      );
+    },
+    renderNoHighScores() {
+      return (
+         <View style={styles.highScore}>
+          <Text>
+            {"it looks like you have no high scores."}{"\n"}{"\n"}
+            {"go play and get some!"}
+          </Text>
+         </View>
       );
     }
   });
