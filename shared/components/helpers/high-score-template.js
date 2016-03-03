@@ -40,9 +40,9 @@ var HighScoreTemplate = function(opts) {
     },
     componentWillMount() {
       var self = this;
-      AsyncStorage.getItem('userId')
-        .then( (userId) => {
-          ddp.subscribe('HighScores', [userId], () => {
+      AsyncStorage.getItem('userInfo')
+        .then( (userInfo) => {
+          ddp.subscribe('HighScores', [userInfo], () => {
             var items = ddp.collections.HighScores ? ddp.collections.HighScores.items : null;
             self.update(items);
           });

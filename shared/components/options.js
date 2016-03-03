@@ -65,7 +65,7 @@ var Options = React.createClass({
   },
   updateUser() {
     var self = this;
-    AsyncStorage.getItem('userId')
+    AsyncStorage.getItem('userInfo')
       .then( (v) => {
         var list;
         if(v) {

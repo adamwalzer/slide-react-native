@@ -16,7 +16,7 @@ var FacebookLoginManager = require('NativeModules').FacebookLoginManager;
 var FBListItem = React.createClass({
   logout() {
     console.log("logout");
-    AsyncStorage.removeItem('userId', function() {
+    AsyncStorage.removeItem('userInfo', function() {
       e.emit('logout');
     });
   },
@@ -26,7 +26,8 @@ var FBListItem = React.createClass({
       if (error) {
         alert("There was an error authenticating facebook.");
       } else {
-        AsyncStorage.setItem('userId', ''+info.userId, function() {
+        console.log(info.toString());
+        AsyncStorage.setItem('userInfo', ''+info.userId+"|"+info.token, function() {
           e.emit('login');
         });
       }
