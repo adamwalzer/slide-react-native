@@ -2,12 +2,16 @@
 
 var GameTemplate = require('./helpers/game-template.js');
 var loop = require('./helpers/loop.js');
+var dimensions = require('./dimensions.js');
 
 var opts = {
   title: "clear",
   highCopy: "low",
   sort: 1,
   originalB: Array(Array({v:0},{v:0},{v:0},{v:0}),Array({v:0},{v:0},{v:0},{v:0}),Array({v:0},{v:0},{v:0},{v:0}),Array({v:0},{v:0},{v:0},{v:0})),
+  getB() {
+    return this.originalB;
+  },
   // created: function() {
   //   Session.set(this.t+'-score', 0);
   //   if(getVar(this.t+'-high-score')) Session.set(this.t+'-high-score',getVar(this.t+'-high-score'));
@@ -97,7 +101,20 @@ var opts = {
   },
   styleFunction(v) {
     return v%16;
-  }
+  },
+  clickResetOption(yes) {
+    this.resetBoard(yes);
+    this.setState({
+      resetTop: dimensions.height,
+    });
+  },
+  clickGameOverOption(yes) {
+    this.resetBoard(yes);
+    this.setState({
+      gameOverTop: dimensions.height,
+    });
+    if(yes !== true) this.props.navigator.jumpTo(this.props.navigator.props.initialRouteStack[0]);;
+  },
 };
 
 var ClearGame = GameTemplate(opts);

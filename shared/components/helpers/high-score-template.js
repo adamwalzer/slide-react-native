@@ -24,6 +24,12 @@ var colors = require('../colors.js');
 var backgroundColors = require('../background-colors.js');
 
 var HighScoreTemplate = function(opts) {
+  var sortFunction = {0:function(a,b) {
+    return b.score - a.score;
+  }, 2:function(a,b) {
+    return a.score - b.score;
+  }}[1+opts.sort];
+
   return React.createClass({
     // mixins: [ReactMeteorData],
     // getMeteorData() {
@@ -63,9 +69,7 @@ var HighScoreTemplate = function(opts) {
         return res.concat(rows[v]);
       }, []).filter(function(a) {
         return a.game === opts.title;
-      }).sort(function(a,b) {
-        return b.score - a.score;
-      }) : [];
+      }).sort(sortFunction) : [];
       this.setState({
         data: data,
         loaded: true,
