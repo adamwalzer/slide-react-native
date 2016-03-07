@@ -7,7 +7,10 @@ var opts = {
   max: 0,
   min: 0,
   sort: 1,
-  limit: 5
+  limit: 5,
+  styleFunction(v) {
+    return v%16;
+  }
 };
 
 var ClearHighScores = HighScoreTemplate(opts);

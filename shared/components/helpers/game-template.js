@@ -260,27 +260,21 @@ var GameTemplate = function(opts) {
       AsyncStorage.setItem(this.t+'-high-score', ''+high);
       var b = self.getB();
 
-      ddp.connect(function(error) {
-        if(!error) {
-          AsyncStorage.getItem('userInfo', function(error,userInfo) {
-            if(userInfo) {
-              ddp.call('addHighScore', [{
-                userInfo,
-                game: self.t,
-                score: self.state.score,
-                board: b,
-                sort: self.sort
-              }], function() {
-                self.resetBoard.call(self, resetBoard);
-              });
-            } else {
-              self.resetBoard.call(self, resetBoard);
-            }
-          }).done();
+      AsyncStorage.getItem('userInfo', function(error,userInfo) {
+        if(userInfo) {
+          ddp.call('addHighScore', [{
+            userInfo,
+            game: self.t,
+            score: self.state.score,
+            board: b,
+            sort: self.sort
+          }], function() {
+            self.resetBoard.call(self, resetBoard);
+          });
         } else {
           self.resetBoard.call(self, resetBoard);
         }
-      });
+      }).done();
 
     },
     resetBoard(resetBoard) {

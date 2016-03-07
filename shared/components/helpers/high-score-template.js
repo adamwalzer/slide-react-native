@@ -117,6 +117,7 @@ var HighScoreTemplate = function(opts) {
                     x: x,
                     y: y,
                     _id: ""+k+x+y,
+                    styleFunction: opts.styleFunction
                   });
                   return (
                     <Piece opts={p} key={p._id} />

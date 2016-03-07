@@ -9,6 +9,7 @@ var opts = {
     mx: 0
   },
   renderGame: function() {
+    this.state.isGameOver = false;
     this.mx = 0;
     this.createPiece();
   },
