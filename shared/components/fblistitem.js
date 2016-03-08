@@ -27,7 +27,7 @@ var FBListItem = React.createClass({
         alert("There was an error authenticating facebook.");
       } else {
         AsyncStorage.setItem('userInfo', JSON.stringify(info), function() {
-          e.emit('login');
+          e.emit('login',info);
         });
       }
     });

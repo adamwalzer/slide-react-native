@@ -12,6 +12,7 @@ var {
   AsyncStorage,
 } = React;
 
+var e = require('../events.js');
 var ddp = require('../ddp.js');
 
 var swipe = require('./swipe.js');
@@ -262,7 +263,7 @@ var GameTemplate = function(opts) {
 
       AsyncStorage.getItem('userInfo', function(error,userInfo) {
         if(userInfo) {
-          ddp.call('addHighScore', [{
+          e.emit('addEvent', 'addHighScore', [{
             userInfo,
             game: self.t,
             score: self.state.score,
@@ -271,6 +272,15 @@ var GameTemplate = function(opts) {
           }], function() {
             self.resetBoard.call(self, resetBoard);
           });
+          // ddp.call('addHighScore', [{
+          //   userInfo,
+          //   game: self.t,
+          //   score: self.state.score,
+          //   board: b,
+          //   sort: self.sort
+          // }], function() {
+          //   self.resetBoard.call(self, resetBoard);
+          // });
         } else {
           self.resetBoard.call(self, resetBoard);
         }

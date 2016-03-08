@@ -13,7 +13,8 @@ var {
 
 var Carousel = require('react-native-carousel');
 
-var ddp = require('../ddp.js');
+var e = require('../events.js');
+// var ddp = require('../ddp.js');
 
 var loop = require('./loop.js');
 var pieces = require('./piece.js');
@@ -45,14 +46,23 @@ var HighScoreTemplate = function(opts) {
       };
     },
     componentWillMount() {
-      var self = this;
-      AsyncStorage.getItem('userInfo')
-        .then( (userInfo) => {
-          ddp.subscribe('HighScores', [userInfo], () => {
-            var items = ddp.collections.HighScores ? ddp.collections.HighScores.items : null;
-            self.update(items);
-          });
-        }).done();
+      e.on('updateHighScores', this.update);
+      e.emit('subscribe');
+      if(!this.state.loaded) {
+        this.update;
+      }
+      // var self = this;
+      // AsyncStorage.getItem('HighScores')
+      //   .then((HighScores) => {
+      //     self.update(JSON.parse(HighScores));
+      //   }).done();
+      // AsyncStorage.getItem('userInfo')
+      //   .then( (userInfo) => {
+      //     ddp.subscribe('HighScores', [userInfo], () => {
+      //       var items = ddp.collections.HighScores ? ddp.collections.HighScores.items : null;
+      //       self.update(items);
+      //     });
+      //   }).done();
       // observer = ddp.observe('HighScores');
       // console.log(observer);
       // console.log(ddp.collections);
@@ -61,19 +71,26 @@ var HighScoreTemplate = function(opts) {
       // observer.changed = () => this.update(ddp.collections.HighScores.items);
       // observer.removed = () => this.update(ddp.collections.HighScores.items);
     },
+    componentWillUnmount() {
+      e.removeListener('updateHighScores', this.update);
+    },
     componentDidMount() {
 
     },
-    update: function(rows) {
-      var data = rows ? Object.keys(rows).reduce(function(res, v) {
-        return res.concat(rows[v]);
-      }, []).filter(function(a) {
-        return a.game === opts.title;
-      }).sort(sortFunction) : [];
-      this.setState({
-        data: data,
-        loaded: true,
-      });
+    update: function() {
+      var self = this;
+      AsyncStorage.getItem('HighScores').then((HighScores) => {
+        var rows = JSON.parse(HighScores);
+        var data = rows ? Object.keys(rows).reduce(function(res, v) {
+          return res.concat(rows[v]);
+        }, []).filter(function(a) {
+          return a.game === opts.title;
+        }).sort(sortFunction) : [];
+        self.setState({
+          data: data,
+          loaded: true,
+        });
+      }).done();
     },
     render() {
       return (
