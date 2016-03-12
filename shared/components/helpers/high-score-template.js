@@ -46,11 +46,9 @@ var HighScoreTemplate = function(opts) {
       };
     },
     componentWillMount() {
+      this.update();
       e.on('updateHighScores', this.update);
       e.emit('subscribe');
-      if(!this.state.loaded) {
-        this.update;
-      }
       // var self = this;
       // AsyncStorage.getItem('HighScores')
       //   .then((HighScores) => {

@@ -269,9 +269,8 @@ var GameTemplate = function(opts) {
             score: self.state.score,
             board: b,
             sort: self.sort
-          }], function() {
-            self.resetBoard.call(self, resetBoard);
-          });
+          }]);
+          self.resetBoard(resetBoard);
           // ddp.call('addHighScore', [{
           //   userInfo,
           //   game: self.t,
@@ -282,7 +281,7 @@ var GameTemplate = function(opts) {
           //   self.resetBoard.call(self, resetBoard);
           // });
         } else {
-          self.resetBoard.call(self, resetBoard);
+          self.resetBoard(resetBoard);
         }
       }).done();
 
