@@ -2,6 +2,7 @@
 
 var GameTemplate = require('./helpers/game-template.js');
 var loop = require('./helpers/loop.js');
+var colors = require('./colors.js');
 
 var opts = {
   title: "infinity",
@@ -26,7 +27,7 @@ var opts = {
     return v+1;
   },
   styleFunction(v) {
-    return v%16;
+    return (v-1)%colors.length;
   }
 };
 

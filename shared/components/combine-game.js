@@ -2,6 +2,7 @@
 
 var GameTemplate = require('./helpers/game-template.js');
 var loop = require('./helpers/loop.js');
+var colors = require('./colors.js');
 
 var opts = {
   title: "combine",
@@ -59,7 +60,7 @@ var opts = {
         var p = ps[n];
         opts.z = p.val()-1;
         opts.styleFunction = function(v) {
-          return v%16;
+          return (v-1)%colors.length;
         };
         p.val(opts.z);
         this.pieces[opts._id] = this.makeNewPiece(opts);

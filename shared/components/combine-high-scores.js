@@ -1,6 +1,7 @@
 'use strict';
 
 var HighScoreTemplate = require('./helpers/high-score-template.js');
+var colors = require('./colors.js');
 
 var opts = {
   title: "combine",
@@ -9,7 +10,7 @@ var opts = {
   sort: -1,
   limit: 5,
   styleFunction(v) {
-    return v%16;
+    return (v-1)%colors.length;
   }
 };
 

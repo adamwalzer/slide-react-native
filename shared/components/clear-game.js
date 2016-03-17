@@ -2,6 +2,7 @@
 
 var GameTemplate = require('./helpers/game-template.js');
 var loop = require('./helpers/loop.js');
+var colors = require('./colors.js');
 var dimensions = require('./dimensions.js');
 
 var opts = {
@@ -100,7 +101,7 @@ var opts = {
     });
   },
   styleFunction(v) {
-    return v%16;
+    return (v-1)%colors.length;
   },
   clickResetOption(yes) {
     this.resetBoard(yes);

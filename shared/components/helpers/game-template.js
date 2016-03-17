@@ -17,6 +17,7 @@ var ddp = require('../ddp.js');
 
 var swipe = require('./swipe.js');
 var loop = require('./loop.js');
+var colors = require('../colors.js');
 var pieces = require('./piece.js');
 var piece = pieces.piece;
 var Piece = pieces.Piece;

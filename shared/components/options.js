@@ -31,6 +31,11 @@ var Options = React.createClass({
         text: "logout with facebook",
       },
       {
+        type: "facebook",
+        action: "invite",
+        text: "invite facebook friends",
+      },
+      {
         dataTarget: "rules",
         text: "how to play",
       },

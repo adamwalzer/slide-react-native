@@ -11,7 +11,12 @@ var {
 
 var e = require('./events.js');
 
-var FacebookLoginManager = require('NativeModules').FacebookLoginManager;
+var {
+  FacebookLoginManager,
+  FacebookInviteManager,
+} = require('NativeModules');
+
+console.log(FacebookInviteManager);
 
 var FBListItem = React.createClass({
   logout() {
@@ -30,6 +35,12 @@ var FBListItem = React.createClass({
           e.emit('login',info);
         });
       }
+    });
+  },
+  invite() {
+    console.log("invite");
+    FacebookInviteManager.show(() => {
+      console.log(arguments);
     });
   },
   render: function() {
