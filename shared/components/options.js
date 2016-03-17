@@ -31,6 +31,11 @@ var Options = React.createClass({
         text: "logout with facebook",
       },
       {
+        type: "facebook",
+        action: "invite",
+        text: "invite facebook friends",
+      },
+      {
         dataTarget: "rules",
         text: "how to play",
       },
@@ -65,7 +70,7 @@ var Options = React.createClass({
   },
   updateUser() {
     var self = this;
-    AsyncStorage.getItem('userId')
+    AsyncStorage.getItem('userInfo')
       .then( (v) => {
         var list;
         if(v) {

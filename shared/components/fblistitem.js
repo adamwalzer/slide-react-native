@@ -11,12 +11,17 @@ var {
 
 var e = require('./events.js');
 
-var FacebookLoginManager = require('NativeModules').FacebookLoginManager;
+var {
+  FacebookLoginManager,
+  FacebookInviteManager,
+} = require('NativeModules');
+
+console.log(FacebookInviteManager);
 
 var FBListItem = React.createClass({
   logout() {
     console.log("logout");
-    AsyncStorage.removeItem('userId', function() {
+    AsyncStorage.removeItem('userInfo', function() {
       e.emit('logout');
     });
   },
@@ -26,10 +31,16 @@ var FBListItem = React.createClass({
       if (error) {
         alert("There was an error authenticating facebook.");
       } else {
-        AsyncStorage.setItem('userId', ''+info.userId, function() {
-          e.emit('login');
+        AsyncStorage.setItem('userInfo', JSON.stringify(info), function() {
+          e.emit('login',info);
         });
       }
+    });
+  },
+  invite() {
+    console.log("invite");
+    FacebookInviteManager.show(() => {
+      console.log(arguments);
     });
   },
   render: function() {

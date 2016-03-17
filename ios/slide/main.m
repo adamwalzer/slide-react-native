@@ -13,6 +13,16 @@
 
 int main(int argc, char * argv[]) {
   @autoreleasepool {
+    
+    for (NSString* family in [UIFont familyNames])
+    {
+      NSLog(@"%@", family);
+      for (NSString* name in [UIFont fontNamesForFamilyName: family])
+      {
+        NSLog(@" %@", name);
+      }
+    }
+    
     return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
   }
 }

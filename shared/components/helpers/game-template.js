@@ -12,10 +12,12 @@ var {
   AsyncStorage,
 } = React;
 
+var e = require('../events.js');
 var ddp = require('../ddp.js');
 
 var swipe = require('./swipe.js');
 var loop = require('./loop.js');
+var colors = require('../colors.js');
 var pieces = require('./piece.js');
 var piece = pieces.piece;
 var Piece = pieces.Piece;
@@ -240,6 +242,17 @@ var GameTemplate = function(opts) {
     getHigh: opts.getHigh || function() {
       return Math.max(this.state.score,this.state.high);
     },
+    getB: opts.getB || function() {
+      var b = Array(Array(null,null,null,null),Array(null,null,null,null),Array(null,null,null,null),Array(null,null,null,null));
+      for(var i=0;i<4;i++) {
+        for(var j=0;j<4;j++) {
+          if(this.b[i][j]) {
+            b[i][j] = {v:this.b[i][j].v}
+          }
+        }
+      }
+      return b;
+    },
     setNewHigh: opts.setNewHigh || function(resetBoard) {
       var self = this;
       var high = this.getHigh();
@@ -247,35 +260,31 @@ var GameTemplate = function(opts) {
         high: high,
       });
       AsyncStorage.setItem(this.t+'-high-score', ''+high);
-      var b = Array(Array(null,null,null,null),Array(null,null,null,null),Array(null,null,null,null),Array(null,null,null,null));
-      for(var i=0;i<4;i++) {
-        for(var j=0;j<4;j++) {
-          if(self.b[i][j]) {
-            b[i][j] = {v:self.b[i][j].v}
-          }
-        }
-      }
+      var b = self.getB();
 
-      ddp.connect(function(error) {
-        if(!error) {
-          AsyncStorage.getItem('userId', function(error,userId) {
-            if(userId) {
-              ddp.call('addHighScore', {
-                game: self.t,
-                score: self.state.score,
-                board: b,
-                sort: self.sort
-              }, function() {
-                self.resetBoard.call(self, resetBoard);
-              });
-            } else {
-              self.resetBoard.call(self, resetBoard);
-            }
-          }).done();
+      AsyncStorage.getItem('userInfo', function(error,userInfo) {
+        if(userInfo) {
+          e.emit('addEvent', 'addHighScore', [{
+            userInfo,
+            game: self.t,
+            score: self.state.score,
+            board: b,
+            sort: self.sort
+          }]);
+          self.resetBoard(resetBoard);
+          // ddp.call('addHighScore', [{
+          //   userInfo,
+          //   game: self.t,
+          //   score: self.state.score,
+          //   board: b,
+          //   sort: self.sort
+          // }], function() {
+          //   self.resetBoard.call(self, resetBoard);
+          // });
         } else {
-          self.resetBoard.call(self, resetBoard);
+          self.resetBoard(resetBoard);
         }
-      });
+      }).done();
 
     },
     resetBoard(resetBoard) {
@@ -333,13 +342,13 @@ var GameTemplate = function(opts) {
         top: this.gameOverTop,
       };
     },
-    clickResetOption(yes) {
+    clickResetOption: opts.clickResetOption || function(yes) {
       yes === true && this.setNewHigh(true,this.b);
       this.setState({
         resetTop: dimensions.height,
       });
     },
-    clickGameOverOption(yes) {
+    clickGameOverOption: opts.clickGameOverOption || function(yes) {
       this.setNewHigh(yes,this.b);
       this.setState({
         gameOverTop: dimensions.height,

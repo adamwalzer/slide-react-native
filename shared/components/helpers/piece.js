@@ -18,12 +18,12 @@ var piece = function(opts) {
   this.initialize = function(opts) {
     var opts = opts || {};
     this.styleFunction = opts.styleFunction || function(v) {
-      return Math.log2(v)%16;
+      return (Math.log2(v)-1)%colors.length;
     };
     this.w = opts.w ? dimensions.width/opts.w : 25;
     this.x = opts.x || 0;
     this.y = opts.y || 0;
-    this.v = opts.z || 2;
+    this.v = opts.z || 0;
     this.m = opts.m || 0
     this._id = opts._id || 0;
     this.p = opts.p || {};
@@ -68,26 +68,30 @@ var piece = function(opts) {
 var Piece = React.createClass({
   getInitialState() {
     return {
-      styleNumber: new Animated.Value(Math.log2(this.props.opts.v)%16),
-      textStyleNumber: new Animated.Value(Math.log2(this.props.opts.v)%16),
+      styleNumber: new Animated.Value(Math.log2(this.props.opts.v)%colors.length),
+      textStyleNumber: new Animated.Value(Math.log2(this.props.opts.v)%colors.length),
       opacity: new Animated.Value(0),
       left: new Animated.Value(this.props.opts.x*this.props.opts.w),
       top: new Animated.Value(this.props.opts.y*this.props.opts.w),
-      degrees: new Animated.Value(this.props.degrees),
+      degrees: new Animated.Value(this.props.degrees || 0),
       new: true,
     };
   },
   getOffsets() {
+    var inputRange = [];
+    for(var i =0;i<colors.length;i++) {
+      inputRange.push(i);
+    }
 
     var backgroundColor = this.state.styleNumber.interpolate({
-        inputRange: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+        inputRange,
         outputRange: backgroundColors,
     });
 
     Animated.parallel([
       Animated.timing(this.state.opacity, {
         duration: 200,
-        toValue: !!this.props.opts.toDestroy && !this.state.new ? 0 : 1,
+        toValue: (!!this.props.opts.toDestroy && !this.state.new) || this.props.opts.v === 0 ? 0 : 1,
       }),
       Animated.timing(this.state.styleNumber, {
         duration: 200,
@@ -95,11 +99,11 @@ var Piece = React.createClass({
       }),
       Animated.timing(this.state.left, {
         duration: 200,
-        toValue: this.props.opts.w*this.props.opts.x,
+        toValue: this.props.opts.w*this.props.opts.x + dimensions.height*.003,
       }),
       Animated.timing(this.state.top, {
         duration: 200,
-        toValue: this.props.opts.w*this.props.opts.y,
+        toValue: this.props.opts.w*this.props.opts.y + dimensions.height*.003,
       }),
     ]).start();
 
@@ -111,12 +115,17 @@ var Piece = React.createClass({
     };
   },
   getTextOffsets() {
+    var inputRange = [];
+    for(var i =0;i<colors.length;i++) {
+      inputRange.push(i);
+    }
+
     var textColor = this.state.textStyleNumber.interpolate({
-        inputRange: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+        inputRange,
         outputRange: colors,
     });
 
-    var options = [this.props.degrees,this.state.degrees._value].sort(function(a,b) {
+    var options = [this.props.degrees || 0,this.state.degrees._value].sort(function(a,b) {
       return a - b;
     });
     var degrees = this.state.degrees.interpolate({
@@ -131,7 +140,7 @@ var Piece = React.createClass({
       }),
       Animated.timing(this.state.degrees, {
         duration: 200,
-        toValue: this.props.degrees,
+        toValue: this.props.degrees || 0,
       }),
     ]).start();
 

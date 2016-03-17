@@ -36,6 +36,10 @@ var ClearRules = require('./shared/components/clear-rules.js');
 var CombineRules = require('./shared/components/combine-rules.js');
 var HighScores = require('./shared/components/high-scores.js');
 var OriginalHighScores = require('./shared/components/original-high-scores.js');
+var InfinityHighScores = require('./shared/components/infinity-high-scores.js');
+var TwistHighScores = require('./shared/components/twist-high-scores.js');
+var ClearHighScores = require('./shared/components/clear-high-scores.js');
+var CombineHighScores = require('./shared/components/combine-high-scores.js');
 
 var slide = React.createClass({
   componentWillMount() {
@@ -89,6 +93,18 @@ var slide = React.createClass({
         break;
       case 'original-high-scores':
         return <OriginalHighScores navigator={navigator} />;
+        break;
+      case 'infinity-high-scores':
+        return <InfinityHighScores navigator={navigator} />;
+        break;
+      case 'twist-high-scores':
+        return <TwistHighScores navigator={navigator} />;
+        break;
+      case 'clear-high-scores':
+        return <ClearHighScores navigator={navigator} />;
+        break;
+      case 'combine-high-scores':
+        return <CombineHighScores navigator={navigator} />;
         break;
       case 'welcome':
       default:

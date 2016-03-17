@@ -46,11 +46,14 @@ var stylesObject = {
   li: {
     borderRadius: dimensions.width*.03,
     marginBottom: dimensions.height*.02,
-    padding: dimensions.height*.02,
+    padding: dimensions.height*.01,
+    borderWidth: dimensions.height*.006,
   },
   liText: {
-    fontSize: dimensions.height*.04,
+    fontSize: dimensions.height*.06,
     textAlign: 'center',
+    fontWeight: 'bold',
+    fontFamily: 'Bangers',
   },
   gameMenu: {
     flexDirection: 'row',
@@ -82,6 +85,7 @@ var stylesObject = {
     textAlign: 'center',
     fontSize: dimensions.height*.05,
     color: colors[0],
+    fontFamily: 'Bangers',
   },
   gameDetails: {
     justifyContent: 'space-around',
@@ -93,11 +97,13 @@ var stylesObject = {
     height: dimensions.width/4,
     backgroundColor: backgroundColors[0],
     justifyContent: 'center',
+    borderWidth: dimensions.height*.006,
   },
   gameScoreText: {
     textAlign: 'center',
     color: colors[0],
     fontSize: dimensions.height*.04,
+    fontFamily: 'Bangers',
   },
   board: {
     position: 'relative',
@@ -107,15 +113,17 @@ var stylesObject = {
   },
   piece: {
     position: 'absolute',
-    width: dimensions.width/4,
-    height: dimensions.width/4,
+    width: dimensions.width/4 - dimensions.height*.006,
+    height: dimensions.width/4 - dimensions.height*.006,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: dimensions.width*.025,
+    borderWidth: dimensions.height*.006,
   },
   pieceText: {
     textAlign: 'center',
     fontSize: dimensions.height*.04,
+    fontFamily: 'Bangers',
   },
   gameResetMenu: {
     position: 'absolute',
@@ -138,6 +146,7 @@ var stylesObject = {
   },
   textlink: {
     textDecorationLine: "underline",
+    fontFamily: 'Bangers',
   },
   highScore: {
     justifyContent: 'space-between',
@@ -152,9 +161,11 @@ var stylesObject = {
 for(var i = 0, n = colorNumbers.length; i < n; i++) {
   stylesObject['li'+i] = {
     backgroundColor: backgroundColors[i],
+    borderColor: colors[i],
   };
   stylesObject['liText'+i] = {
     color: colors[i],
+    borderColor: colors[i],
   };
 }
 

@@ -21,6 +21,9 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		2460C6371C9612C0009D4D16 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2460C6361C9612C0009D4D16 /* FBSDKShareKit.framework */; };
+		2460C6471C9625E6009D4D16 /* FacebookInviteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2460C6461C9625E6009D4D16 /* FacebookInviteManager.m */; };
+		2460C64C1C965BE5009D4D16 /* Bangers.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2460C64B1C965BB3009D4D16 /* Bangers.ttf */; };
 		24DC83851C414ECA006508C4 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24DC83841C414ECA006508C4 /* FBSDKCoreKit.framework */; };
 		24DC83871C414ED9006508C4 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24DC83861C414ED9006508C4 /* FBSDKLoginKit.framework */; };
 		24DC838A1C41531E006508C4 /* FacebookLoginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DC83891C41531E006508C4 /* FacebookLoginManager.m */; };
@@ -127,6 +130,10 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = slide/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = slide/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
+		2460C6361C9612C0009D4D16 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = "../../FacebookSDKs-iOS-20151111/FBSDKShareKit.framework"; sourceTree = "<group>"; };
+		2460C6451C9625AE009D4D16 /* FacebookInviteManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FacebookInviteManager.h; sourceTree = "<group>"; };
+		2460C6461C9625E6009D4D16 /* FacebookInviteManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookInviteManager.m; sourceTree = "<group>"; };
+		2460C64B1C965BB3009D4D16 /* Bangers.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Bangers.ttf; path = ../fonts/Bangers.ttf; sourceTree = "<group>"; };
 		24DC83841C414ECA006508C4 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../FacebookSDKs-iOS-20151111/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
 		24DC83861C414ED9006508C4 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = "../../FacebookSDKs-iOS-20151111/FBSDKLoginKit.framework"; sourceTree = "<group>"; };
 		24DC83881C4152E4006508C4 /* FacebookLoginManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FacebookLoginManager.h; sourceTree = "<group>"; };
@@ -151,6 +158,7 @@
 				24DC83851C414ECA006508C4 /* FBSDKCoreKit.framework in Frameworks */,
 				24DC83871C414ED9006508C4 /* FBSDKLoginKit.framework in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
+				2460C6371C9612C0009D4D16 /* FBSDKShareKit.framework in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
@@ -244,7 +252,9 @@
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				24DC83881C4152E4006508C4 /* FacebookLoginManager.h */,
+				2460C6451C9625AE009D4D16 /* FacebookInviteManager.h */,
 				24DC83891C41531E006508C4 /* FacebookLoginManager.m */,
+				2460C6461C9625E6009D4D16 /* FacebookInviteManager.m */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
@@ -265,6 +275,7 @@
 		245D4C3A1C3CC025009E8E7E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2460C6361C9612C0009D4D16 /* FBSDKShareKit.framework */,
 				24DC83861C414ED9006508C4 /* FBSDKLoginKit.framework */,
 				24DC83841C414ECA006508C4 /* FBSDKCoreKit.framework */,
 			);
@@ -307,6 +318,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				2460C64B1C965BB3009D4D16 /* Bangers.ttf */,
 				13B07FAE1A68108700A75B9A /* slide */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* slideTests */,
@@ -527,6 +539,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				2460C64C1C965BE5009D4D16 /* Bangers.ttf in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -565,6 +578,7 @@
 			files = (
 				24DC838A1C41531E006508C4 /* FacebookLoginManager.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				2460C6471C9625E6009D4D16 /* FacebookInviteManager.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

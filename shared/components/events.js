@@ -1,11 +1,4 @@
-const EventEmitter = require('events');
-const util = require('util');
-
-function Emitter() {
-  EventEmitter.call(this);
-}
-util.inherits(Emitter, EventEmitter);
-
-const e = new Emitter();
+const E = require('events').EventEmitter;
+const e = new E();
 
 module.exports = e;
