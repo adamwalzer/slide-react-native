@@ -8,7 +8,8 @@ var {
   StyleSheet,
   Text,
   View,
-  Image
+  Image,
+  AsyncStorage,
 } = React;
 
 var Welcome = React.createClass({
@@ -38,7 +39,11 @@ var Welcome = React.createClass({
         dataTarget: 6,
         text: "options",
       },
-    ]
+    ];
+
+    AsyncStorage.getItem('userInfo').then((userInfo) => {
+      if(!userInfo) this.props.navigator.jumpTo(this.props.navigator.props.initialRouteStack[6]);
+    });
   },
   render: function() {
     var self = this;

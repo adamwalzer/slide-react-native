@@ -11,6 +11,7 @@ var {
   Navigator,
   View,
   Text,
+  AsyncStorage,
 } = React;
 var {
   Analytics,
