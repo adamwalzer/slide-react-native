@@ -263,7 +263,7 @@ var GameTemplate = function(opts) {
       this.moving = false;
     },
     playSound: opts.playSound || function() {
-      console.log(this.props.navigator.getCurrentRoutes());
+      if(!~this.props.navigator._navigationContext._currentRoute.component.indexOf(this.t)) return;
       if(this.state.settings) {
         if(!this.state.settings.sfx || !this.state.settings.sound) return;
       }
