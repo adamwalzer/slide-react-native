@@ -41,9 +41,32 @@ var Welcome = React.createClass({
       },
     ];
 
-    AsyncStorage.getItem('userInfo').then((userInfo) => {
-      if(!userInfo) this.props.navigator.jumpTo(this.props.navigator.props.initialRouteStack[6]);
-    });
+    AsyncStorage.multiGet(['userInfo','settings']).then((a) => {
+      var change = false;
+      if(!a.userInfo) this.props.navigator.jumpTo(this.props.navigator.props.initialRouteStack[6]);
+      if(a.settings) {
+        if(typeof a.settings.sfx === "undefined") {
+          change = true;
+          a.settings.sfx = true;
+        }
+        if(typeof a.settings.music === "undefined") {
+          change = true;
+          a.settings.music = true;
+        }
+        if(typeof a.settings.sound === "undefined") {
+          change = true;
+          a.settings.sound = true;
+        }
+      } else {
+        change = true;
+        a.settings = {
+          sfx: true,
+          music: true,
+          sound: true,
+        };
+      }
+      if(change) AsyncStorage.setItem('settings',JSON.stringify(a.settings));
+    }).done();
   },
   render: function() {
     var self = this;

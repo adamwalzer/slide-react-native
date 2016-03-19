@@ -106,6 +106,7 @@ var opts = {
       pieces: this.pieces
     });
     if(moved) {
+      this.playSound();
       setTimeout(function() {
         this.pieces = this.pieces.filter(function(piece) {
           return !piece.toDestroy;

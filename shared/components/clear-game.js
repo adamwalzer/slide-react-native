@@ -48,6 +48,7 @@ var opts = {
     if(this.state.isGameOver) return;
     this.updateScore(1);
     if(moved) {
+      this.playSound();
       setTimeout(function() {
         this.createPiece();
       }.bind(this), 250);

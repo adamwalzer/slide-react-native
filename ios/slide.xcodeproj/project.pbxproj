@@ -25,6 +25,8 @@
 		2460C6471C9625E6009D4D16 /* FacebookInviteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2460C6461C9625E6009D4D16 /* FacebookInviteManager.m */; };
 		2460C64C1C965BE5009D4D16 /* Bangers.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2460C64B1C965BB3009D4D16 /* Bangers.ttf */; };
 		2460C67B1C9B751A009D4D16 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2460C67A1C9B751A009D4D16 /* libz.tbd */; };
+		24763E271C9CF331005E2E15 /* libRNSound.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24763E261C9CF2E4005E2E15 /* libRNSound.a */; };
+		24763E2B1C9CF766005E2E15 /* whoo.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 24763E2A1C9CF766005E2E15 /* whoo.mp3 */; };
 		24DC83851C414ECA006508C4 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24DC83841C414ECA006508C4 /* FBSDKCoreKit.framework */; };
 		24DC83871C414ED9006508C4 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24DC83861C414ED9006508C4 /* FBSDKLoginKit.framework */; };
 		24DC838A1C41531E006508C4 /* FacebookLoginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DC83891C41531E006508C4 /* FacebookLoginManager.m */; };
@@ -103,6 +105,13 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = CodePush;
 		};
+		24763E251C9CF2E4005E2E15 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 24763E161C9CF2E4005E2E15 /* RNSound.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 19825A1E1BD4A89800EE0337;
+			remoteInfo = RNSound;
+		};
 		78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */;
@@ -144,6 +153,8 @@
 		2460C6461C9625E6009D4D16 /* FacebookInviteManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookInviteManager.m; sourceTree = "<group>"; };
 		2460C64B1C965BB3009D4D16 /* Bangers.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Bangers.ttf; path = ../fonts/Bangers.ttf; sourceTree = "<group>"; };
 		2460C67A1C9B751A009D4D16 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		24763E161C9CF2E4005E2E15 /* RNSound.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSound.xcodeproj; path = "../node_modules/react-native-sound/RNSound.xcodeproj"; sourceTree = "<group>"; };
+		24763E2A1C9CF766005E2E15 /* whoo.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = whoo.mp3; sourceTree = "<group>"; };
 		24DC83841C414ECA006508C4 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../FacebookSDKs-iOS-20151111/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
 		24DC83861C414ED9006508C4 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = "../../FacebookSDKs-iOS-20151111/FBSDKLoginKit.framework"; sourceTree = "<group>"; };
 		24DC83881C4152E4006508C4 /* FacebookLoginManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FacebookLoginManager.h; sourceTree = "<group>"; };
@@ -166,6 +177,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				24763E271C9CF331005E2E15 /* libRNSound.a in Frameworks */,
 				2460C67B1C9B751A009D4D16 /* libz.tbd in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				24DC83851C414ECA006508C4 /* FBSDKCoreKit.framework in Frameworks */,
@@ -263,8 +275,10 @@
 		13B07FAE1A68108700A75B9A /* slide */ = {
 			isa = PBXGroup;
 			children = (
+				24763E2A1C9CF766005E2E15 /* whoo.mp3 */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
+				24763E161C9CF2E4005E2E15 /* RNSound.xcodeproj */,
 				24DC83881C4152E4006508C4 /* FacebookLoginManager.h */,
 				2460C6451C9625AE009D4D16 /* FacebookInviteManager.h */,
 				24DC83891C41531E006508C4 /* FacebookLoginManager.m */,
@@ -301,6 +315,14 @@
 			isa = PBXGroup;
 			children = (
 				2460C66F1C9B744D009D4D16 /* libCodePush.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		24763E171C9CF2E4005E2E15 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				24763E261C9CF2E4005E2E15 /* libRNSound.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -472,6 +494,10 @@
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
+				{
+					ProductGroup = 24763E171C9CF2E4005E2E15 /* Products */;
+					ProjectRef = 24763E161C9CF2E4005E2E15 /* RNSound.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -545,6 +571,13 @@
 			remoteRef = 2460C66E1C9B744D009D4D16 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		24763E261C9CF2E4005E2E15 /* libRNSound.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNSound.a;
+			remoteRef = 24763E251C9CF2E4005E2E15 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		78C398B91ACF4ADC00677621 /* libRCTLinking.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -573,6 +606,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				24763E2B1C9CF766005E2E15 /* whoo.mp3 in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				2460C64C1C965BE5009D4D16 /* Bangers.ttf in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,

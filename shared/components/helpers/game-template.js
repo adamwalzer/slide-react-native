@@ -22,6 +22,13 @@ var pieces = require('./piece.js');
 var piece = pieces.piece;
 var Piece = pieces.Piece;
 
+var Sound = require('react-native-sound');
+
+var sounds = {
+  whoosh: new Sound('whoo.mp3', Sound.MAIN_BUNDLE),
+  whoosh2: new Sound('whoo.mp3', Sound.MAIN_BUNDLE),
+};
+
 var GameTemplate = function(opts) {
 
   var movedWithoutCombine = opts.movedWithoutCombine || function() {
@@ -114,11 +121,16 @@ var GameTemplate = function(opts) {
     styleFunction: opts.styleFunction,
     componentWillMount: opts.componentWillMount || function() {
       var self = this;
-      AsyncStorage.getItem(this.t+'-high-score',function(error,val) {
+
+      e.on('settingsUpdate',this.updateSettings);
+      this.getSettings();
+
+      AsyncStorage.getItem(this.t+'-high-score').then((val) => {
         self.setState({
           high: val || 0,
         });
       }).done();
+
       this.swipe = swipe({
         left: this.left,
         right: this.right,
@@ -126,9 +138,23 @@ var GameTemplate = function(opts) {
         down: this.down
       });
     },
+    componentWillUnmount: opts.componentWillUnmount || function() {
+      e.off('settingsUpdate',this.updateSettings);
+    },
     componentDidMount: opts.componentDidMount || function() {
       this.el = this.refs["board"];
       if(!this.pieces.length) this.renderGame();
+    },
+    getSettings() {
+      AsyncStorage.getItem('settings').then(this.updateSettings).done();
+    },
+    updateSettings(settings) {
+      if(typeof settings === "string") settings = JSON.parse(settings);
+      if(settings) {
+        this.setState({
+          settings,
+        });
+      }
     },
     renderGame: opts.renderGame || function() {
       this.state.isGameOver = false;
@@ -229,11 +255,25 @@ var GameTemplate = function(opts) {
         pieces: this.pieces
       });
       if(moved) {
+        this.playSound();
         setTimeout(function() {
           this.createPiece();
         }.bind(this), 250);
       }
       this.moving = false;
+    },
+    playSound: opts.playSound || function() {
+      console.log(this.props.navigator.getCurrentRoutes());
+      if(this.state.settings) {
+        if(!this.state.settings.sfx || !this.state.settings.sound) return;
+      }
+      sounds.whoosh.getCurrentTime((t,p) => {
+        if(p) {
+          sounds.whoosh2.play();
+        } else {
+          sounds.whoosh.play();
+        }
+      });
     },
     boardCleared: opts.boardCleared || function() {},
     getGameOverMessage: opts.getGameOverMessage || function() {

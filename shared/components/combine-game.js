@@ -30,6 +30,7 @@ var opts = {
       this.updateScore(100);
       this.split(this.makeSpaces(this.b));
     }
+    this.playSound();
     this.mx++;
     this.move++;
     this.moving = false;
