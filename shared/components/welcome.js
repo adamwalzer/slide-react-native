@@ -41,31 +41,33 @@ var Welcome = React.createClass({
       },
     ];
 
-    AsyncStorage.multiGet(['userInfo','settings']).then((a) => {
-      var change = false;
-      if(!a.userInfo) this.props.navigator.jumpTo(this.props.navigator.props.initialRouteStack[6]);
-      if(a.settings) {
-        if(typeof a.settings.sfx === "undefined") {
+    AsyncStorage.multiGet(['userInfo','settings'],(error,a) => {
+      var userInfo = a[0][1],
+          settings = JSON.parse(a[1][1]),
+          change = false;
+      if(!userInfo) this.props.navigator.jumpTo(this.props.navigator.props.initialRouteStack[6]);
+      if(settings) {
+        if(typeof settings.sfx === "undefined") {
           change = true;
-          a.settings.sfx = true;
+          settings.sfx = true;
         }
-        if(typeof a.settings.music === "undefined") {
+        if(typeof settings.music === "undefined") {
           change = true;
-          a.settings.music = true;
+          settings.music = true;
         }
-        if(typeof a.settings.sound === "undefined") {
+        if(typeof settings.sound === "undefined") {
           change = true;
-          a.settings.sound = true;
+          settings.sound = true;
         }
       } else {
         change = true;
-        a.settings = {
+        settings = {
           sfx: true,
           music: true,
           sound: true,
         };
       }
-      if(change) AsyncStorage.setItem('settings',JSON.stringify(a.settings));
+      if(change) AsyncStorage.setItem('settings',JSON.stringify(settings));
     }).done();
   },
   render: function() {

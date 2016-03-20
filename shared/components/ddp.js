@@ -40,10 +40,20 @@ ddp.connect(function(error, wasReconnect) {
   e.emit('connected');
 });
 
+signIn = () => {
+  AsyncStorage.getItem('userInfo').then((userInfo) => {
+    ddp.call('signIn', [userInfo], () => {
+      subscribe();
+      syncEvents();
+    });
+  }).done();
+};
+
 subscribe = () => {
   AsyncStorage.getItem('userInfo').then((userInfo) => {
-    ddp.subscribe('HighScores', [userInfo], () => {
-      var items = ddp.collections.HighScores ? ddp.collections.HighScores.items : null;
+    ddp.call('getHighScores', [], (HighScores) => {
+      var items = HighScores ? HighScores.items : null;
+      console.log(items);
       AsyncStorage.setItem('HighScores', JSON.stringify(items), () => {
         e.emit('updateHighScores');
       });
@@ -60,12 +70,12 @@ addEvent = (func,args,cb) => {
 syncEvents = () => {
   if(eventsArray && eventsArray.length) {
     var args = eventsArray[0];
-    var func = args[2];
+    var cb = args[2];
     args[2] = () => {
       eventsArray.shift();
       if(eventsArray.length) syncEvents();
-      if(typeof func === 'function') {
-        func(arguments);
+      if(typeof cb === 'function') {
+        cb(arguments);
       }
     };
     ddp.call.apply(ddp, args);
@@ -73,11 +83,12 @@ syncEvents = () => {
 };
 
 connected = () => {
-  subscribe();
-  syncEvents();
+  signIn();
 };
 
-login = function() {};
+login = function() {
+  signIn();
+};
 logout = function() {};
 
 e.on('connected', connected);

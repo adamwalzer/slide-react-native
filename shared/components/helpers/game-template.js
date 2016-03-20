@@ -18,9 +18,10 @@ var ddp = require('../ddp.js');
 var swipe = require('./swipe.js');
 var loop = require('./loop.js');
 var colors = require('../colors.js');
-var pieces = require('./piece.js');
-var piece = pieces.piece;
-var Piece = pieces.Piece;
+var {
+  piece,
+  Piece
+} = require('./piece.js');
 
 var Sound = require('react-native-sound');
 
@@ -131,6 +132,9 @@ var GameTemplate = function(opts) {
         });
       }).done();
 
+      this.setupSwipe();
+    },
+    setupSwipe: opts.setupSwipe || function() {
       this.swipe = swipe({
         left: this.left,
         right: this.right,
@@ -302,16 +306,15 @@ var GameTemplate = function(opts) {
       AsyncStorage.setItem(this.t+'-high-score', ''+high);
       var b = self.getB();
 
-      AsyncStorage.getItem('userInfo', function(error,userInfo) {
-        if(userInfo) {
-          e.emit('addEvent', 'addHighScore', [{
-            userInfo,
-            game: self.t,
-            score: self.state.score,
-            board: b,
-            sort: self.sort
-          }]);
-          self.resetBoard(resetBoard);
+      e.emit('addEvent', 'addHighScore', [{
+        game: self.t,
+        score: self.state.score,
+        board: b,
+        sort: self.sort
+      }]);
+      self.resetBoard(resetBoard);
+      // AsyncStorage.getItem('userInfo', function(error,userInfo) {
+      //   if(userInfo) {
           // ddp.call('addHighScore', [{
           //   userInfo,
           //   game: self.t,
@@ -321,10 +324,10 @@ var GameTemplate = function(opts) {
           // }], function() {
           //   self.resetBoard.call(self, resetBoard);
           // });
-        } else {
-          self.resetBoard(resetBoard);
-        }
-      }).done();
+      //   } else {
+      //     self.resetBoard(resetBoard);
+      //   }
+      // }).done();
 
     },
     resetBoard(resetBoard) {

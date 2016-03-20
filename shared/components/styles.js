@@ -124,6 +124,7 @@ var stylesObject = {
     textAlign: 'center',
     fontSize: dimensions.height*.04,
     fontFamily: 'Bangers',
+    padding: dimensions.height*.004,
   },
   gameResetMenu: {
     position: 'absolute',
@@ -146,6 +147,7 @@ var stylesObject = {
   },
   textlink: {
     textDecorationLine: "underline",
+    textDecorationStyle: "double",
     fontFamily: 'Bangers',
   },
   highScore: {

@@ -89,13 +89,7 @@ var opts = {
     });
     setTimeout(this.fall.bind(this,0), 250);
   },
-  componentWillMount: function() {
-    var self = this;
-    AsyncStorage.getItem(this.t+'-high-score',function(error,val) {
-      self.setState({
-        high: val || 0,
-      });
-    }).done();
+  setupSwipe() {
     this.swipe = swipe({
       left: this.ccw,
       right: this.cw,
