@@ -6,7 +6,7 @@ var e = require('./events.js');
 var {
   AsyncStorage,
 } = React;
-var connected, login, logout, subscribe, addEvent, syncEvents, eventsArray;
+var connected, login, logout, subscribe, addEvent, syncEvents, doneSyncing, eventsObj = {}, processedEvents = {}, syncing = false;
 
 var ddp = new DDPClient({
   // All properties optional, defaults shown
@@ -50,36 +50,56 @@ signIn = () => {
 };
 
 subscribe = () => {
-  AsyncStorage.getItem('userInfo').then((userInfo) => {
-    ddp.call('getHighScores', [], (HighScores) => {
-      var items = HighScores ? HighScores.items : null;
-      console.log(items);
-      AsyncStorage.setItem('HighScores', JSON.stringify(items), () => {
-        e.emit('updateHighScores');
-      });
-    })
+  ddp.subscribe('HighScores', [], () => {
+    var items = ddp.collections.HighScores ? ddp.collections.HighScores.items : null;
+    AsyncStorage.setItem('HighScores', JSON.stringify(items), () => {
+      e.emit('updateHighScores');
+    });
   });
 };
 
-addEvent = (func,args,cb) => {
-  eventsArray = eventsArray || [];
-  eventsArray.push([func,args,cb]);
-  syncEvents();
+addEvent = (ts,func,args,cb) => {
+  AsyncStorage.mergeItem('eventsObj',JSON.stringify(eventsObj)).then((obj) => {
+    eventsObj = obj ? JSON.parse(obj) : {};
+    if(!eventsObj[ts]) {
+      eventsObj[ts] = [func,args,cb];
+      syncEvents();
+    } else {
+      addEvent.call(null,++ts,func,args,cb);
+    }
+  });
 };
 
 syncEvents = () => {
-  if(eventsArray && eventsArray.length) {
-    var args = eventsArray[0];
-    var cb = args[2];
-    args[2] = () => {
-      eventsArray.shift();
-      if(eventsArray.length) syncEvents();
-      if(typeof cb === 'function') {
-        cb(arguments);
+  if(eventsObj && Object.keys(eventsObj).length != 0 && ddp.socket.readyState === 1 && !syncing) {
+    syncing = true;
+    console.log("syncing");
+    ddp.call('syncEvents', [eventsObj], (error,result) => {
+      console.log("synced");
+      for(var key in result) {
+        if(!eventsObj.hasOwnProperty(key)) continue;
+        eventsObj[key] = result[key];
       }
-    };
-    ddp.call.apply(ddp, args);
+      syncing = false;
+      e.emit('doneSyncing');
+    });
   }
+};
+
+doneSyncing = () => {
+  Object.keys(eventsObj).map(function(key) {
+     if(eventsObj[key][1].processed) {
+       processedEvents[key] = eventsObj[key];
+       delete eventsObj[key];
+     }
+  });
+  console.log(eventsObj);
+  AsyncStorage.setItem('eventsObj', JSON.stringify(eventsObj)).then(() => {
+    syncEvents();
+  }).done();
+  AsyncStorage.mergeItem('processedEvents', JSON.stringify(processedEvents)).then(() => {
+    processedEvents = {};
+  }).done();
 };
 
 connected = () => {
@@ -94,6 +114,7 @@ logout = function() {};
 e.on('connected', connected);
 e.on('addEvent', addEvent);
 e.on('subscribe', subscribe);
+e.on('doneSyncing', doneSyncing);
 e.on('login', login);
 e.on('logout', logout);
 

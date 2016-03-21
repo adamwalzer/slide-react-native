@@ -68,8 +68,8 @@ var piece = function(opts) {
 var Piece = React.createClass({
   getInitialState() {
     return {
-      styleNumber: new Animated.Value(Math.log2(this.props.opts.v)%colors.length),
-      textStyleNumber: new Animated.Value(Math.log2(this.props.opts.v)%colors.length),
+      styleNumber: new Animated.Value(Math.log2(this.props.opts.v||1)%colors.length),
+      textStyleNumber: new Animated.Value(Math.log2(this.props.opts.v||1)%colors.length),
       opacity: new Animated.Value(0),
       left: new Animated.Value(this.props.opts.x*this.props.opts.w),
       top: new Animated.Value(this.props.opts.y*this.props.opts.w),
@@ -95,7 +95,7 @@ var Piece = React.createClass({
       }),
       Animated.timing(this.state.styleNumber, {
         duration: 200,
-        toValue: this.props.opts.s,
+        toValue: this.props.opts.s || 0,
       }),
       Animated.timing(this.state.left, {
         duration: 200,
@@ -136,7 +136,7 @@ var Piece = React.createClass({
     Animated.parallel([
       Animated.timing(this.state.textStyleNumber, {
         duration: 200,
-        toValue: this.props.opts.s,
+        toValue: this.props.opts.s || 0,
       }),
       Animated.timing(this.state.degrees, {
         duration: 200,

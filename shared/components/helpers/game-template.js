@@ -15,6 +15,7 @@ var {
 var e = require('../events.js');
 var ddp = require('../ddp.js');
 
+var date = new Date();
 var swipe = require('./swipe.js');
 var loop = require('./loop.js');
 var colors = require('../colors.js');
@@ -23,18 +24,19 @@ var {
   Piece
 } = require('./piece.js');
 
-var Sound = require('react-native-sound');
-
-var sounds = {
-  whoosh: new Sound('whoo.mp3', Sound.MAIN_BUNDLE),
-  whoosh2: new Sound('whoo.mp3', Sound.MAIN_BUNDLE),
-};
+var sounds = require('../sounds.js');
 
 var GameTemplate = function(opts) {
 
   var movedWithoutCombine = opts.movedWithoutCombine || function() {
     return true;
   };
+
+  var sortFunction = {0:function(a,b) {
+    return b.score - a.score;
+  }, 2:function(a,b) {
+    return a.score - b.score;
+  }}[1+opts.sort];
 
   var moveTiles = function(Z,d) {
     var getB, setB;
@@ -123,6 +125,9 @@ var GameTemplate = function(opts) {
     componentWillMount: opts.componentWillMount || function() {
       var self = this;
 
+      e.on('updateHighScores',this.updateHighScores);
+      this.updateHighScores();
+
       e.on('settingsUpdate',this.updateSettings);
       this.getSettings();
 
@@ -143,6 +148,7 @@ var GameTemplate = function(opts) {
       });
     },
     componentWillUnmount: opts.componentWillUnmount || function() {
+      e.off('updateHighScores',this.updateHighScores);
       e.off('settingsUpdate',this.updateSettings);
     },
     componentDidMount: opts.componentDidMount || function() {
@@ -151,6 +157,20 @@ var GameTemplate = function(opts) {
     },
     getSettings() {
       AsyncStorage.getItem('settings').then(this.updateSettings).done();
+    },
+    updateHighScores() {
+      var self = this;
+      AsyncStorage.getItem('HighScores').then((HighScores) => {
+        var rows, data, high;
+        rows = JSON.parse(HighScores);
+        data = rows ? Object.keys(rows).reduce(function(res, v) {
+          return res.concat(rows[v]);
+        }, []).filter(function(a) {
+          return a.game === self.t;
+        }).sort(sortFunction) : [];
+        high = self.getHigh(data[0] && data[0].score);
+        self.setState({high});
+      }).done();
     },
     updateSettings(settings) {
       if(typeof settings === "string") settings = JSON.parse(settings);
@@ -283,8 +303,8 @@ var GameTemplate = function(opts) {
     getGameOverMessage: opts.getGameOverMessage || function() {
       return "You scored "+this.state.score+"!";
     },
-    getHigh: opts.getHigh || function() {
-      return Math.max(this.state.score,this.state.high);
+    getHigh: opts.getHigh || function(score) {
+      return Math.max(score||this.state.score,this.state.high);
     },
     getB: opts.getB || function() {
       var b = Array(Array(null,null,null,null),Array(null,null,null,null),Array(null,null,null,null),Array(null,null,null,null));
@@ -298,37 +318,19 @@ var GameTemplate = function(opts) {
       return b;
     },
     setNewHigh: opts.setNewHigh || function(resetBoard) {
-      var self = this;
       var high = this.getHigh();
       this.setState({
-        high: high,
+        high,
       });
       AsyncStorage.setItem(this.t+'-high-score', ''+high);
-      var b = self.getB();
 
-      e.emit('addEvent', 'addHighScore', [{
-        game: self.t,
-        score: self.state.score,
-        board: b,
-        sort: self.sort
-      }]);
-      self.resetBoard(resetBoard);
-      // AsyncStorage.getItem('userInfo', function(error,userInfo) {
-      //   if(userInfo) {
-          // ddp.call('addHighScore', [{
-          //   userInfo,
-          //   game: self.t,
-          //   score: self.state.score,
-          //   board: b,
-          //   sort: self.sort
-          // }], function() {
-          //   self.resetBoard.call(self, resetBoard);
-          // });
-      //   } else {
-      //     self.resetBoard(resetBoard);
-      //   }
-      // }).done();
-
+      e.emit('addEvent', date.getTime(), 'addHighScore', {
+        game: this.t,
+        score: this.state.score,
+        board: this.getB(),
+        sort: this.sort
+      });
+      this.resetBoard(resetBoard);
     },
     resetBoard(resetBoard) {
       if(resetBoard) {

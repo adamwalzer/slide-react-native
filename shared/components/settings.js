@@ -19,7 +19,7 @@ var Settings = React.createClass({
     }
   },
   componentWillMount: function() {
-    e.on('updateSetting',this.updateSetting);
+    e.on('settingsUpdate',this.updateSetting);
     this.getSettings();
   },
   componentWillUnmount: function() {
@@ -34,8 +34,8 @@ var Settings = React.createClass({
     this.updateSettings(settings);
   },
   updateSettings(settings) {
-    if(typeof settings === "string") settings = JSON.parse(settings);
-    if(settings) {
+    if(settings && settings != this.state.settings) {
+      if(typeof settings === "string") settings = JSON.parse(settings);
       this.setState({
         settings,
       });

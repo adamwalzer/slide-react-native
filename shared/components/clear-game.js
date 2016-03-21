@@ -41,8 +41,8 @@ var opts = {
   //     this.renderGame();
   //   }
   // },
-  getHigh() {
-    return Math.min(this.state.score,this.state.high||1000000);
+  getHigh(score) {
+    return Math.min(score||this.state.score,this.state.high||1000000);
   },
   afterMove: function(moved) {
     if(this.state.isGameOver) return;
