@@ -97,7 +97,7 @@ var HighScoreTemplate = function(opts) {
             <ListItem dataTarget={"high-scores"} text={"back to high scores"} styleNumber={0} key={0} navigator={this.props.navigator} />
           </View>
           <View style={styles.gameDetails}>
-            <Text style={styles.gameTitle}>{this.state.t}</Text>
+            <Text style={[styles.gameTitle, styles.highScoreText]}>{this.state.t}</Text>
           </View>
           <Carousel width={dimensions.width} indicatorAtBottom={false} indicatorOffset={-dimensions.height*.03} indicatorSize={dimensions.height*.06} indicatorColor={colors[0]} inactiveIndicatorColor={backgroundColors[0]}>
             {(() => {

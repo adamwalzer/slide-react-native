@@ -30,6 +30,8 @@ var ClearGame = require('./clear-game.js');
 var CombineGame = require('./combine-game.js');
 var Options = require('./options.js');
 var Settings = require('./settings.js');
+var Shop = require('./shop.js');
+var Buy = require('./buy.js');
 var Rules = require('./rules.js');
 var OriginalRules = require('./original-rules.js');
 var InfinityRules = require('./infinity-rules.js');
@@ -74,6 +76,12 @@ var slide = React.createClass({
         break;
       case 'settings':
         return <Settings navigator={navigator} />;
+        break;
+      case 'shop':
+        return <Shop navigator={navigator} />;
+        break;
+      case 'buy':
+        return <Buy navigator={navigator} opts={route} />;
         break;
       case 'rules':
         return <Rules navigator={navigator} />;

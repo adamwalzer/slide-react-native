@@ -28,6 +28,8 @@ var sounds = require('../sounds.js');
 
 var GameTemplate = function(opts) {
 
+  var lastZ, lastD;
+
   var movedWithoutCombine = opts.movedWithoutCombine || function() {
     return true;
   };
@@ -426,11 +428,7 @@ var GameTemplate = function(opts) {
         <View style={styles.container}>
           <View style={styles.gameMenu}>
             <TouchableWithoutFeedback onPress={this.handleOnPress.bind(this, 0)}>
-              <View style={styles.gameOptions}>
-                <View style={styles.gameOptionsLines}></View>
-                <View style={styles.gameOptionsLines}></View>
-                <View style={styles.gameOptionsLines}></View>
-              </View>
+              <Image source={require('../../../images/hamburger.png')} style={styles.gameOptions} />
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={this.clickReset}>
               <View style={styles.gameReset}>

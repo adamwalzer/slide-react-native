@@ -13,23 +13,23 @@ var Rules = React.createClass({
     this.list = [
       {
         dataTarget: "original-rules",
-        text: "original rules",
+        text: "original",
       },
       {
         dataTarget: "infinity-rules",
-        text: "infinity rules",
+        text: "infinity",
       },
       {
         dataTarget: "twist-rules",
-        text: "twist rules",
+        text: "twist",
       },
       {
         dataTarget: "clear-rules",
-        text: "clear rules",
+        text: "clear",
       },
       {
         dataTarget: "combine-rules",
-        text: "combine rules",
+        text: "combine",
       },
       {
         dataTarget: 6,
@@ -42,6 +42,9 @@ var Rules = React.createClass({
 
     return (
       <View style={styles.options}>
+        <Text style={[styles.liText, styles.ruleHeader, styles['liText'+0]]}>
+          {"How To Play"}
+        </Text>
         <View style={styles.ul}>
           {this.list.map(function(li,x){
             return (

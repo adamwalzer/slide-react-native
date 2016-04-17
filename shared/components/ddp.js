@@ -56,6 +56,24 @@ subscribe = () => {
       e.emit('updateHighScores');
     });
   });
+
+  ddp.subscribe('Users', [], () => {
+    var users, user;
+    users = ddp.collections.Users ? ddp.collections.Users.items : {};
+    user = users[Object.keys(users)[0]];
+    AsyncStorage.setItem('User', JSON.stringify(user), () => {
+      e.emit('updateUser');
+    });
+  });
+
+  ddp.subscribe('Items', [], () => {
+    var items, userItems;
+    items = ddp.collections.Items ? ddp.collections.Items.items : {};
+    userItems = items[Object.keys(items)[0]];
+    AsyncStorage.setItem('Items', JSON.stringify(userItems), () => {
+      e.emit('updateItems');
+    });
+  });
 };
 
 addEvent = (ts,func,args,cb) => {

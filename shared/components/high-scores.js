@@ -13,23 +13,23 @@ var HighScores = React.createClass({
     this.list = [
       {
         dataTarget: "original-high-scores",
-        text: "original high scores",
+        text: "original",
       },
       {
         dataTarget: "infinity-high-scores",
-        text: "infinity high scores",
+        text: "infinity",
       },
       {
         dataTarget: "twist-high-scores",
-        text: "twist high scores",
+        text: "twist",
       },
       {
         dataTarget: "clear-high-scores",
-        text: "clear high scores",
+        text: "clear",
       },
       {
         dataTarget: "combine-high-scores",
-        text: "combine high scores",
+        text: "combine",
       },
       {
         dataTarget: 6,
@@ -42,6 +42,9 @@ var HighScores = React.createClass({
 
     return (
       <View style={styles.options}>
+        <Text style={[styles.liText, styles.ruleHeader, styles['liText'+0]]}>
+          {"High Scores"}
+        </Text>
         <View style={styles.ul}>
           {this.list.map(function(li,x){
             return (
