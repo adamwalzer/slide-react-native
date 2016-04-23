@@ -9,6 +9,8 @@ var {
   AsyncStorage,
 } = React;
 
+var e = require('./events.js');
+
 var BuyItem = React.createClass({
   handleOnPress() {
     var i, a, t;
@@ -20,6 +22,10 @@ var BuyItem = React.createClass({
         a = u.items ? u.items[i.item] || 0 : 0;
         a += i.amount;
         t = u.thatAweTokens - i.cost;
+        e.emit('addEvent', Date.now(), 'transaction', {
+          thatAweTokens: -i.cost,
+          [i.item]: i.amount,
+        });
       }).done();
     }
 

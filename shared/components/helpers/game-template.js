@@ -15,7 +15,6 @@ var {
 var e = require('../events.js');
 var ddp = require('../ddp.js');
 
-var date = new Date();
 var swipe = require('./swipe.js');
 var loop = require('./loop.js');
 var colors = require('../colors.js');
@@ -326,7 +325,7 @@ var GameTemplate = function(opts) {
       });
       AsyncStorage.setItem(this.t+'-high-score', ''+high);
 
-      e.emit('addEvent', date.getTime(), 'addHighScore', {
+      e.emit('addEvent', Date.now(), 'addHighScore', {
         game: this.t,
         score: this.state.score,
         board: this.getB(),

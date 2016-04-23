@@ -10,7 +10,6 @@ var {
 
 var InventoryItem = React.createClass({
   render: function() {
-    console.log(this.props);
     return (
       <View style={styles.items}>
         <Text style={styles.itemCostText}>
